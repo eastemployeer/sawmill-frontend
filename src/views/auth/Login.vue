@@ -42,25 +42,14 @@ export default class Login extends Vue {
   loginType = 'KLIENT';
 
   login() {
-    if (this.loginType === 'PRACOWNIK') {
-      const data = {
-        login: this.emailLogin,
-        password: this.password,
-      };
+    const data = {
+      email: this.emailLogin,
+      password: this.password,
+    };
 
-      store.dispatch(AuthAction.AttemptLoginPracownik, data).then(() => {
-        this.$router.push({ name: 'ProductList' });
-      });
-    } else {
-      const data = {
-        email: this.emailLogin,
-        password: this.password,
-      };
-
-      store.dispatch(AuthAction.AttemptLoginKlient, data).then(() => {
-        this.$router.push({ name: 'ProductList' });
-      });
-    }
+    store.dispatch(AuthAction.AttemptLogin, data).then(() => {
+      this.$router.push({ name: 'ProductList' });
+    });
   }
 }
 </script>

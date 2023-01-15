@@ -26,5 +26,5 @@ export default createStore({
     auth: AuthModule,
     cart: CartModule,
   },
-  plugins: [vuexLocal.plugin]
+  plugins: [vuexLocal.plugin],
 });

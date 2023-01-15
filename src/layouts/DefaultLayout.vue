@@ -17,7 +17,7 @@
 
 import SideBar from '@/components/SideBar.vue';
 
-import EventBus from '@/services/EventBus';
+// import EventBus from '@/services/EventBus';
 import { Options, Vue } from 'vue-class-component';
 
 @Options({
@@ -35,11 +35,11 @@ export default class DefaultLayout extends Vue {
   buttonOnPress = null;
 
   created() {
-    EventBus.$on('layout-view', this.changeViewData);
+    // EventBus.$on('layout-view', this.changeViewData);
   }
 
   beforeDestroy() {
-    EventBus.$off('layout-view', this.changeViewData);
+    // EventBus.$off('layout-view', this.changeViewData);
   }
 
   changeViewData(data: any) {

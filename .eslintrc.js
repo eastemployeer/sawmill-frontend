@@ -12,10 +12,24 @@ module.exports = {
     ecmaVersion: 2020,
   },
   rules: {
+    'vue/multi-word-component-names': 'warn',
+    'max-len': ['warn', 150],
+    'linebreak-style': ['warn', 'windows'],
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    'vuejs-accessibility/label-has-for': [
+      'warn',
+      {
+        components: ['VLabel'],
+        controlComponents: ['VInput'],
+        required: {
+          every: ['nesting', 'id'],
+        },
+        allowChildren: false,
+      },
+    ],
     'vuejs-accessibility/form-control-has-label': [
-      'warning',
+      'warn',
       {
         labelComponents: ['CustomLabel'],
         controlComponents: ['CustomInput'],

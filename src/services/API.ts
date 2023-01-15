@@ -32,7 +32,7 @@ class API {
 
     try {
       response = await Axios(config);
-    } catch (error) {
+    } catch (error: any) {
       return { status: error.response.status };
     }
 

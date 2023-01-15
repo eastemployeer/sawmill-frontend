@@ -9,8 +9,7 @@ import {
 
 // eslint-disable-next-line no-shadow
 export enum AuthAction {
-  AttemptLoginKlient = 'attemptLoginKlient',
-  AttemptLoginPracownik = 'attemptLoginPracownik',
+  AttemptLogin = 'attemptLogin',
   Logout = 'logout',
 }
 
@@ -33,21 +32,21 @@ export default class AuthModule extends VuexModule<AuthState> {
     }
 
     @Mutation
-    private handleLogin(data: LoginResponse) {
+    handleLogin(data: LoginResponse) {
       this.token = data.token;
       this.currentUser = data.user;
       this.accountType = data.accountType;
     }
 
     @Mutation
-    private handleLogout() {
+    handleLogout() {
       this.token = null;
       this.currentUser = null;
       this.accountType = null;
     }
 
     @Action({ rawError: true })
-    private async [AuthAction.AttemptLoginKlient](data: LoginKlientRequest) {
+    async [AuthAction.AttemptLogin](data: LoginKlientRequest) {
       try {
         const response = await AuthService.loginKlient(data);
         if (response.status === 202) {
@@ -55,14 +54,6 @@ export default class AuthModule extends VuexModule<AuthState> {
         }
       } catch (error) {
         console.error('error', error);
-      }
-    }
-
-    @Action({ rawError: true })
-    private async [AuthAction.AttemptLoginPracownik](data: LoginPracownikRequest) {
-      const response = await AuthService.loginPracownik(data);
-      if (response.status === 202) {
-        this.context.commit('handleLogin', response);
       }
     }
 
