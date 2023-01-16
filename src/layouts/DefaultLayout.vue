@@ -3,9 +3,9 @@
     <SideBar />
     <div id="view">
       <div id="viewTitle">{{ viewTitle }}</div>
-      <b-button v-if='buttonShow' v-on:click='buttonOnPress' variant="primary" id="layoutButton">{{
-        buttonText
-      }}</b-button>
+      <b-button v-if='buttonShow' v-on:click='buttonOnPress' variant="primary" id="layoutButton">
+        {{ buttonText }}
+      </b-button>
       <div id="routerView" :style="{ marginTop: buttonShow ? '18px' : '56px' }">
         <router-view />
       </div>
@@ -33,14 +33,6 @@ export default class DefaultLayout extends Vue {
   buttonText = '';
 
   buttonOnPress = null;
-
-  created() {
-    // EventBus.$on('layout-view', this.changeViewData);
-  }
-
-  beforeDestroy() {
-    // EventBus.$off('layout-view', this.changeViewData);
-  }
 
   changeViewData(data: any) {
     this.viewTitle = data.title;

@@ -46,47 +46,47 @@ export default class SideBar extends Vue {
     {
       icon: 'b-icon-book',
       text: 'Katalog produktów',
-      action: this.goToProductList
+      action: this.goToProductList,
     },
     {
       icon: 'b-icon-book',
       text: 'Lista pracowników',
-      action: this.goToEmployeesList
+      action: this.goToEmployeesList,
     },
     {
       icon: 'b-icon-book',
       text: 'Lista zamówień',
-      action: this.goToOrdersList
+      action: this.goToOrdersList,
     },
     {
       icon: 'b-icon-book',
       text: 'Aktualne zamówienie',
-      action: this.goToMyCart
+      action: this.goToMyCart,
     },
     {
       icon: 'b-icon-book',
       text: 'Lista typów operacji produkcyjnych',
-      action: this.goToOperationsList
+      action: this.goToOperationsList,
     },
     {
       icon: 'b-icon-book',
       text: 'Plan produkcyjny',
-      action: this.goToProductionPlan
+      action: this.goToProductionPlan,
     },
     {
       icon: 'b-icon-book',
       text: 'Lista dostaw',
-      action: this.goToDeliveriesList
+      action: this.goToDeliveriesList,
     },
     {
       icon: 'b-icon-book',
       text: 'Lista maszyn',
-      action: this.goToMachinesList
+      action: this.goToMachinesList,
     },
     {
       icon: 'b-icon-book',
       text: 'Lista magazynów',
-      action: this.goToStorageList
+      action: this.goToStorageList,
     },
   ];
 

@@ -3,6 +3,10 @@ import store from '@/store';
 import HomeView from '../views/HomeView.vue';
 import Login from '../views/auth/Login.vue';
 import Register from '../views/auth/Register.vue';
+import ProductList from '../views/products/List.vue';
+import ProductDetails from '../views/products/Details.vue';
+import ProductCreate from '../views/products/Create.vue';
+import ProductEdit from '../views/products/Edit.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -21,6 +25,30 @@ const routes: Array<RouteRecordRaw> = [
       layout: 'auth',
     },
   },
+  {
+    path: '/product',
+    alias: '/',
+    name: 'ProductList',
+    component: ProductList,
+    children: [
+      {
+        path: 'create',
+        name: 'ProductCreate',
+        component: ProductCreate,
+      },
+      {
+        path: 'edit/:id',
+        name: 'ProductEdit',
+        component: ProductEdit,
+      },
+      {
+        path: ':id',
+        name: 'ProductDetails',
+        component: ProductDetails,
+      },
+    ],
+  },
+
   {
     path: '/',
     name: 'home',

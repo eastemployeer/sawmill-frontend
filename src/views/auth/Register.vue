@@ -6,77 +6,69 @@
       <div class="smallContainer">
         <div class="col-md-6 inputContainer">
           <div class="form-group" v-for="(labelVal, index) in labelVals" :key="labelVal">
-            <label :for="labelVal" class="textLabel">{{ labelVal }}</label>
-            <input v-model="values[index]" type="text" :id="labelVal" class="form-control" :placeholder="labelVal" />
+            <Input v-model="values[index]" :label="labelVal" type="text" :id="labelVal" :placeholder="labelVal" />
           </div>
         </div>
 
         <div class="col-md-6 inputContainer">
           <div class="form-group" v-for="(labelVal, index) in labelVals1" :key="labelVal">
-            <label :for="labelVal" class="textLabel">{{ labelVal }}</label>
-            <input v-model="values[index + 3]" type="text" :id="labelVal" class="form-control"
-              :placeholder="labelVal" />
+            <Input v-model="values[index + 3]" :label="labelVal" type="text" :id="labelVal" :placeholder="labelVal" />
           </div>
         </div>
       </div>
       <div>
         <button type="button" class="btn btn-primary" v-on:click="register">Zarejestruj się</button>
       </div>
-
     </div>
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import API from '@/services/API';
+import Input from '@/components/Input.vue';
+import { Options, Vue } from 'vue-class-component';
 
-export default {
-  data() {
-    return {
-      labelVals: [
-        'Imię',
-        'Nazwisko',
-        'Telefon',
-      ],
-      labelVals1: [
-        'Email',
-        'Hasło',
-        'Powtórz hasło',
-      ],
-      values: [], // kolejno imię, nazwisko, telefon, email, hasło, powtórz-hasło
-    };
+@Options({
+  components: {
+    Input,
   },
-  methods: {
-    async register() {
-      if (this.values[4] === this.values[5]) {
-        try {
-          const data = await new API('post', 'klient', {
-            body: {
-              imie: this.values[0],
-              nazwisko: this.values[1],
-              email: this.values[3],
-              haslo: this.values[4],
-              telefon: this.values[2],
-            },
-          }).call(true);
-          if (data.status === 201) {
-            alert('Rejestracja się powiodła!');
-            this.$router.back();
-          } else {
-            alert('Rejestracja się nie powiodła!');
-          }
-        } catch (error) {
-          // eslint-disable-next-line no-alert
-          alert('Podany użytkownik już istnieje!');
-          console.error('error', error);
+})
+export default class Login extends Vue {
+  labelVals = ['Imię', 'Nazwisko', 'Telefon'];
+
+  labelVals1 = ['Email', 'Hasło', 'Powtórz hasło'];
+
+  values = [];
+
+  async register() {
+    if (this.values[4] === this.values[5]) {
+      try {
+        const data = await new API('post', 'klient', {
+          body: {
+            imie: this.values[0],
+            nazwisko: this.values[1],
+            email: this.values[3],
+            haslo: this.values[4],
+            telefon: this.values[2],
+          },
+        }).call(true);
+        if (data.status === 201) {
+          alert('Rejestracja się powiodła!');
+          this.$router.back();
+        } else {
+          alert('Rejestracja się nie powiodła!');
         }
-      } else {
+      } catch (error) {
         // eslint-disable-next-line no-alert
-        alert('Podane hasła się nie zgadzają!');
+        alert('Podany użytkownik już istnieje!');
+        console.error('error', error);
       }
-    },
-  },
-};
+    } else {
+      // eslint-disable-next-line no-alert
+      alert('Podane hasła się nie zgadzają!');
+    }
+  }
+}
 </script>
 <style scoped lang="scss">
 .container {

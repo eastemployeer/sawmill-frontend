@@ -1,0 +1,129 @@
+{
+    "books": [
+      {
+        "id": 1,
+        "title": "Ostoja1",
+        "author": "Stanisław Lem",
+        "year": 1961,
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam eu enim augue. Vestibulum sed hendrerit nisl. Sed ullamcorper tempor neque. "
+      },
+      {
+        "id": 2,
+        "title": "2001: A Space Odyssey",
+        "author": "Arthur C Clarke",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam eu enim augue. Vestibulum sed hendrerit nisl. Sed ullamcorper tempor neque. ",
+        "year": 1968
+      },
+      {
+        "id": 3,
+        "title": "Ubik",
+        "author": "Phillip K Dick",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam eu enim augue. Vestibulum sed hendrerit nisl. Sed ullamcorper tempor neque. ",
+        "year": 1965
+      },
+      {
+        "id": 4,
+        "title": "The Master's Voice",
+        "author": "Stanisław Lem",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam eu enim augue. Vestibulum sed hendrerit nisl. Sed ullamcorper tempor neque. ",
+        "year": 1968
+      }
+    ],
+    "reviews": [
+      {
+        "id": 1,
+        "author": "Arthur C Clarke",
+        "forBook": 1,
+        "title": "Very good",
+        "description": "Indeed ...",
+        "rate": 5
+      },
+      {
+        "id": 2,
+        "author": "Walter C Clarke",
+        "forBook": 1,
+        "title": "Hmm",
+        "description": "Okay, I had a good time, but I expected something else.",
+        "rate": 3
+      },
+      {
+        "id": 3,
+        "author": "Thomas C Clarke",
+        "forBook": 3,
+        "title": "Don't like it",
+        "description": "Anything is better than this.",
+        "rate": 1
+      },
+      {
+        "forBook": 1,
+        "title": "Good",
+        "author": "Kamil",
+        "description": "Very nice book",
+        "id": 4
+      },
+      {
+        "forBook": 1,
+        "title": "Nice",
+        "author": "Kamil",
+        "rate": 5,
+        "description": "Very nice",
+        "id": 5
+      },
+      {
+        "forBook": 1,
+        "title": "Super good",
+        "author": "Krystian",
+        "rate": 4,
+        "description": "Nice nice",
+        "id": 6
+      },
+      {
+        "forBook": 1,
+        "title": "Fine",
+        "author": "Karolina",
+        "rate": 3,
+        "description": "Good",
+        "id": 7
+      },
+      {
+        "forBook": 1,
+        "title": "GOOD",
+        "author": "ffdfd",
+        "rate": 4,
+        "description": "rrwerew",
+        "id": 8
+      },
+      {
+        "forBook": 1,
+        "title": "fdsf",
+        "author": "fsdfs",
+        "rate": 3,
+        "description": "srfsdfsd",
+        "id": 9
+      },
+      {
+        "forBook": 1,
+        "title": "gfd",
+        "author": "dfgfd",
+        "rate": 3,
+        "description": "gdfgdf",
+        "id": 10
+      },
+      {
+        "forBook": 1,
+        "title": "ttt",
+        "author": "tttt",
+        "rate": 3,
+        "description": "ttt",
+        "id": 11
+      },
+      {
+        "forBook": 1,
+        "title": "dsadasdsa",
+        "author": "dsadas",
+        "rate": 2,
+        "description": "dsadsa",
+        "id": 12
+      }
+    ]
+  }

@@ -12,13 +12,16 @@ module.exports = {
     ecmaVersion: 2020,
   },
   rules: {
+    'no-empty-function': 'warn',
+    'class-methods-use-this': 'off',
+    '@typescript-eslint/no-empty-function': 'warn',
     'vue/multi-word-component-names': 'warn',
     'max-len': ['warn', 150],
     'linebreak-style': ['warn', 'windows'],
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'vuejs-accessibility/label-has-for': [
-      'warn',
+      'off',
       {
         components: ['VLabel'],
         controlComponents: ['VInput'],
@@ -29,7 +32,7 @@ module.exports = {
       },
     ],
     'vuejs-accessibility/form-control-has-label': [
-      'warn',
+      'off',
       {
         labelComponents: ['CustomLabel'],
         controlComponents: ['CustomInput'],
