@@ -18,36 +18,14 @@ export default class App extends Vue {
 </script>
 
 <style lang="scss">
-// Normalize default styles across browsers,
-// https://necolas.github.io/normalize.css/
+// // Normalize default styles across browsers,
+// // https://necolas.github.io/normalize.css/
 @import '~normalize.css/normalize.css';
-// Style loading bar between pages.
-// https://github.com/rstacruz/nprogress
+// // Style loading bar between pages.
+// // https://github.com/rstacruz/nprogress
 @import '~nprogress/nprogress.css';
 
-// @import './style/theme';
-
 @import 'node_modules/bootstrap/scss/bootstrap.scss';
-@import 'node_modules/bootstrap-vue/src/index.scss';
-
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
-}
+// @import 'node_modules/bootstrap-vue/src/index.scss';
+@import './style/theme';
 </style>

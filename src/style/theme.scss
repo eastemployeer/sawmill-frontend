@@ -1,0 +1,63 @@
+@import 'variables';
+@import "~element-ui/packages/theme-chalk/src/index";
+
+#app {
+  font-family: 'Poppins', 'Avenir', Helvetica, Arial, sans-serif;
+  color: #2c3e50;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+*{
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html, body, #app {
+  height: 100%;
+  margin: 0;
+}
+
+.selector-for-some-widget {
+  box-sizing: content-box;
+}
+
+.view {
+  height: 100%;
+  box-shadow: 0 0 50px rgba(16, 30, 115, 0.06);
+}
+
+.viewPadding {
+  height: 100%;
+  padding: 46px 53px;
+  box-shadow: 0 0 50px rgba(16, 30, 115, 0.06);
+}
+
+// text info pseudo-component
+.textInfoContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.textInfoLabel {
+  font-size: 13px;
+  font-weight: bold;
+  line-height: 16px;
+  color: #818E9B;
+  letter-spacing: 0.01em;
+}
+
+.textInfoValue {
+  font-size: 15px;
+  font-weight: bold;
+  line-height: 19px;
+  color: #323C47;
+  letter-spacing: 0.01em;
+}
+.textLabel {
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 22px;
+  color: #262626;
+}

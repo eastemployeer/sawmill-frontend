@@ -82,7 +82,7 @@ export default class Rentals implements IRentals {
   public get priceForDay() {
     let counter = 0;
 
-    this.sprzety.forEach(sprzet => {
+    this.sprzety.forEach((sprzet) => {
       counter += sprzet.cenaWypozyczeniaDzien!;
     });
 
@@ -100,7 +100,7 @@ export default class Rentals implements IRentals {
   public calculateFinancialPenalty() {
     let counter = 0;
 
-    this.sprzety.forEach(sprzet => {
+    this.sprzety.forEach((sprzet) => {
       counter += +sprzet.kara || 0;
     });
 
@@ -110,7 +110,7 @@ export default class Rentals implements IRentals {
   public getFormatedPenaltyDescription() {
     let description = '';
 
-    this.sprzety.forEach(sprzet => {
+    this.sprzety.forEach((sprzet) => {
       if (sprzet.opisKary) { description += `${sprzet.rodzajSprzetu.nazwa} - ${sprzet.opisKary}&#13;&#10;`; }
     });
 

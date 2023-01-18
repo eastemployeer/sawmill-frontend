@@ -9,24 +9,17 @@
             <strong>Ładowanie...</strong>
           </div>
         </template>
+        <template #cell(name)="data">
+          {{ data.item.name }}
+        </template>
 
-        <template #cell(cena_wypozyczenia_dzien)="data">
+        <template #cell(price)="data">
           <div class="text-center">
             {{ data.value + " zł" }}
           </div>
         </template>
-
-        <template #cell(cecha_1)="data">
-          {{ data.item.cecha_1_label ? data.item.cecha_1_label + ": " + data.item.cecha_1_value : "" }}
-        </template>
-        <template #cell(cecha_2)="data">
-          {{ data.item.cecha_2_label ? data.item.cecha_2_label + ": " + data.item.cecha_2_value : "" }}
-        </template>
-        <template #cell(cecha_3)="data">
-          {{ data.item.cecha_3_label ? data.item.cecha_3_label + ": " + data.item.cecha_3_value : "" }}
-        </template>
-        <template #cell(cecha_4)="data">
-          {{ data.item.cecha_4_label ? data.item.cecha_4_label + ": " + data.item.cecha_4_value : "" }}
+        <template #cell(type)="data">
+          {{ data.item.type }}
         </template>
 
         <template #cell(id)="data">
@@ -36,10 +29,6 @@
         </template>
       </b-table>
       <div class="buttons">
-        <b-dropdown id="dropdown-1" :text="'Sezon ' + sezon">
-          <b-dropdown-item v-on:click="sezon = 'zimowy'">Sezon zimowy</b-dropdown-item>
-          <b-dropdown-item v-on:click="sezon = 'letni'">Sezon letni</b-dropdown-item>
-        </b-dropdown>
         <div :style="{ flex: 1 }">
           <b-pagination v-model="currentPage" :total-rows="totalRows" :per-page="30" align="center" last-number />
         </div>
@@ -64,8 +53,6 @@ export default class ProductList extends Vue {
 
   totalRows = 0;
 
-  sezon = 'zimowy';
-
   isLoading = true;
 
   products: any[] = [];
@@ -77,59 +64,29 @@ export default class ProductList extends Vue {
     this.loadProducts();
   }
 
-  @Watch('sezon')
-  public onSezonChange() {
-    this.currentPage = 1;
-    this.loadProducts();
-  }
-
   mounted() {
-    if (store.state.auth.accountType === 'PRACOWNIK') {
-      this.$router.replace({ name: 'RentalsList' });
-    }
-
     // this.setViewTitle();
     this.parentHeight = (this.$refs.table as any).offsetHeight;
     this.fields = [
-      { key: 'rodzaj_sprzetu', label: 'Nazwa' },
-      { key: 'cena_wypozyczenia_dzien', label: 'Cena za dzień' },
-      { key: 'cecha_1', label: 'Cecha' },
-      { key: 'cecha_2', label: 'Cecha' },
-      { key: 'cecha_3', label: 'Cecha' },
-      { key: 'cecha_4', label: 'Cecha' },
+      { key: 'name', label: 'Rodzaj drewna' },
+      { key: 'price', label: 'Cena za m3' },
+      { key: 'type', label: 'Typ produktu' },
       { key: 'id', label: '' },
     ];
     this.loadProducts();
   }
 
-  // async setViewTitle() {
-  //   if (store.state.auth.accountType === 'KLIENT') {
-  //     await EventBus.$emit('layout-view', { title: 'Katalog sprzętów do wypożyczenia' });
-  //   } else if (store.state.auth.accountType === 'KIEROWNIK') {
-  //     await EventBus.$emit('layout-view', {
-  //       title: 'Katalog sprzętów',
-  //       show: true,
-  //       text: 'Dodaj nowy sprzęt',
-  //       onPress: () => this.$router.push({ name: 'ProductCreate' }),
-  //     });
-  //   } else if (store.state.auth.accountType === 'SERWISANT') {
-  //     await EventBus.$emit('layout-view', { title: 'Katalog sprzętów wymagających przeglądu' });
-  //   }
-  // }
-
   async loadProducts() {
     try {
-      const data = await new API('get', 'sprzet', {
+      const data = await new API('get', 'products', {
         query: {
-          limit: 30,
-          offset: (this.currentPage - 1) * 30,
-          sezon: this.sezon,
-          accountType: store.state.auth.accountType,
+          _limit: 30,
+          _page: (this.currentPage - 1) * 30,
         },
       }).call();
-
-      this.products = data.rows;
-      this.totalRows = data.totalRows;
+      console.log(data);
+      this.products = data;
+      this.totalRows = 4; // data.totalRows;
       this.isLoading = false;
     } catch (error) {
       console.error('error', error);
