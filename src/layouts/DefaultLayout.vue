@@ -2,11 +2,11 @@
   <div id="defaultLayout">
     <SideBar />
     <div id="view">
-      <div id="viewTitle">{{ viewTitle }}</div>
-      <b-button v-if='buttonShow' v-on:click='buttonOnPress' variant="primary" id="layoutButton">
-        {{ buttonText }}
+      <div id="viewTitle">{{ viewData.title }}</div>
+      <b-button v-if='viewData.buttonText' v-on:click='viewData.buttonOnPress' variant="primary" id="layoutButton">
+        {{ viewData.buttonText }}
       </b-button>
-      <div id="routerView" :style="{ marginTop: buttonShow ? '18px' : '56px' }">
+      <div id="routerView" :style="{ marginTop: viewData.buttonText ? '18px' : '56px' }">
         <router-view />
       </div>
     </div>
@@ -17,8 +17,14 @@
 
 import SideBar from '@/components/SideBar.vue';
 
-// import EventBus from '@/services/EventBus';
+import EventBus from '@/services/EventBus';
 import { Options, Vue } from 'vue-class-component';
+
+interface ViewDataProps {
+  title: string;
+  buttonText: string;
+  buttonOnPress: ({ ...args }: any) => void;
+}
 
 @Options({
   components: {
@@ -26,19 +32,22 @@ import { Options, Vue } from 'vue-class-component';
   },
 })
 export default class DefaultLayout extends Vue {
-  viewTitle = '';
+  viewData: ViewDataProps = {
+    title: '',
+    buttonText: '',
+    buttonOnPress: () => { },
+  };
 
-  buttonShow = false;
+  created() {
+    EventBus.$on('layout-view', this.changeViewData);
+  }
 
-  buttonText = '';
+  beforeDestroy() {
+    EventBus.$off('layout-view', this.changeViewData);
+  }
 
-  buttonOnPress = null;
-
-  changeViewData(data: any) {
-    this.viewTitle = data.title;
-    this.buttonShow = data.show ? data.show : false;
-    this.buttonText = data.text ? data.text : '';
-    this.buttonOnPress = data.onPress ? data.onPress : null;
+  changeViewData(data: ViewDataProps) {
+    this.viewData = ({ ...data });
   }
 }
 </script>
@@ -67,6 +76,7 @@ export default class DefaultLayout extends Vue {
 
 #layoutButton {
   margin-left: 44px;
+  margin-top: 14px;
   overflow: hidden;
 }
 

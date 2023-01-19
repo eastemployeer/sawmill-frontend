@@ -18,12 +18,8 @@
     <div id="logoutSegment">
       <div class="divider" />
       <b-button pill variant="outline-secondary" id="logoutButton" v-on:click="logout">
-        <div class="buttonIcon">
-          <b-icon-door-open />
-        </div>
-        <div class="buttonText">
-          Wyloguj
-        </div>
+        <b-icon-door-open />
+        Wyloguj
       </b-button>
     </div>
   </div>
@@ -211,11 +207,6 @@ export default class SideBar extends Vue {
 
 .button:hover {
   text-decoration: underline;
-
-}
-
-.buttonIcon {
-  width: 20px;
 }
 
 .buttonText {
@@ -230,11 +221,7 @@ export default class SideBar extends Vue {
 }
 
 #logoutSegment {
-  display: flex;
-  flex: 1;
-  flex-wrap: wrap;
-  align-content: flex-end;
-  align-items: flex-end;
+  margin-top: auto;
 }
 
 #logoutButton {
