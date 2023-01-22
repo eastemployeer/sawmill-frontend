@@ -7,10 +7,10 @@
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 
-import Product from '@/models/Product';
+import { Product } from '@/models/Product';
 import API from '@/services/API';
+import EventBus from '@/services/EventBus';
 import ProductModify from './_Modifi.vue';
-// import EventBus from '@/services/EventBus';
 
 @Options({
   components: {
@@ -18,18 +18,20 @@ import ProductModify from './_Modifi.vue';
   },
 })
 export default class ProductEdit extends Vue {
-  product: Product = new Product();
+  product: Product = {
+    name: '', price: 0, availibility: 0, id: 0, type: '',
+  };
 
   mounted() {
     this.loadProduct(this.$route.params.id);
-    // this.setViewTitle();
+    this.setViewTitle();
   }
 
   async loadProduct(id: any) {
     try {
-      const data = await new API('get', `sprzet/${id}`, {}).call();
+      const data = await new API('get', `products/${id}`, {}).call();
 
-      this.product = new Product(data);
+      this.product = { ...data };
     } catch (error) {
       console.error('error', error);
     }
@@ -37,30 +39,15 @@ export default class ProductEdit extends Vue {
 
   async updateProduct() {
     try {
-      const data = await new API('post', `sprzet/${this.product.id}`, {
-        body: {
-          rodzajSprzetu: this.product.rodzajSprzetu?.nazwa,
-          przeznaczenie: this.product.przeznaczenie,
-          cecha_1_label: this.product.cecha1Label,
-          cecha_1_value: this.product.cecha1Value,
-          cecha_2_label: this.product.cecha2Label,
-          cecha_2_value: this.product.cecha2Value,
-          cecha_3_label: this.product.cecha3Label,
-          cecha_3_value: this.product.cecha3Value,
-          cecha_4_label: this.product.cecha4Label,
-          cecha_4_value: this.product.cecha4Value,
-          cena: this.product.cenaWypozyczeniaDzien,
-          rocznik: this.product.rocznik,
-          wartoscSprzetu: this.product.wartoscSprzetu,
-          blokada: this.product.blokada,
-        },
+      const data = await new API('patch', `products/${this.product.id}`, {
+        body: this.product,
       }).call(true);
 
       if (data.status === 400) {
         alert('Wystąpił błąd, sprawdz wprowadzone dane');
       } else if (data.status === 201) {
         this.$router.back();
-        alert('Zaktualizowano sprzęt');
+        alert('Zaktualizowano produkt');
       } else {
         alert('Nieznany błąd');
       }
@@ -69,9 +56,9 @@ export default class ProductEdit extends Vue {
     }
   }
 
-  // async setViewTitle() {
-  //   await EventBus.$emit('layout-view', { title: 'Edycja sprzetu' });
-  // }
+  async setViewTitle() {
+    await EventBus.$emit('layout-view', { title: 'Edycja produktu' });
+  }
 }
 </script>
 

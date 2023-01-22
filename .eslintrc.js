@@ -12,6 +12,7 @@ module.exports = {
     ecmaVersion: 2020,
   },
   rules: {
+    'no-plusplus': 'off',
     'no-empty-function': 'warn',
     'class-methods-use-this': 'off',
     '@typescript-eslint/no-empty-function': 'warn',

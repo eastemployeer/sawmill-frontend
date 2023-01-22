@@ -1,47 +1,19 @@
 <template>
-  <div class="view list text-center" ref="table">
-    <b-table sticky-header hover head-variant="light" :style="{ maxHeight: parentHeight - 16 - 38 + 'px' }"
-      :fields="fields" :items="products" :busy="isLoading">
-      <template #table-busy>
-        <div class="text-center text-danger">
-          <b-spinner class="align-middle"></b-spinner>
-          <strong>Ładowanie...</strong>
-        </div>
-      </template>
-      <template #cell(name)="data">
-        {{ data.item.name }}
-      </template>
-
-      <template #cell(price)="data">
-        <div class="text-center">
-          {{ data.value + " zł" }}
-        </div>
-      </template>
-      <template #cell(type)="data">
-        {{ data.item.type }}
-      </template>
-
-      <template #cell(id)="data">
-        <router-link :to="{ name: 'ProductDetails', params: { id: data.item.id } }">
-          <b-icon-arrow-right scale="1.5" />
-        </router-link>
-      </template>
-    </b-table>
-    <div class="paginationWrapper">
-      <b-pagination v-model="currentPage" :total-rows="totalRows" :per-page="30" last-number />
-    </div>
-  </div>
-
+  <Table :items="products" :fields="fields" :loadItems="loadProducts" linkTo="ProductDetails" />
 </template>
 
 <script lang="ts">
 import { Watch } from 'vue-property-decorator';
 import API from '@/services/API';
 import EventBus from '@/services/EventBus';
-import store from '@/store';
+import Table from '@/components/Table.vue';
 import { Options, Vue } from 'vue-class-component';
 
-@Options({})
+@Options({
+  components: {
+    Table,
+  },
+})
 export default class ProductList extends Vue {
   parentHeight = 0;
 
@@ -53,7 +25,12 @@ export default class ProductList extends Vue {
 
   products: any[] = [];
 
-  fields: any[] = [];
+  fields = [
+    { key: 'name', label: 'Rodzaj drewna' },
+    { key: 'price', label: 'Cena za m3', formatter: (value: string) => `${value} zł` },
+    { key: 'type', label: 'Typ produktu' },
+    { key: 'id', label: '' },
+  ];;
 
   @Watch('currentPage')
   public onCurrentPageChange() {
@@ -64,34 +41,23 @@ export default class ProductList extends Vue {
     await EventBus.$emit('layout-view', {
       title: 'Katalog produktów',
       buttonText: 'Dodaj nowy produkt',
-      onPress: () => this.$router.push({ name: 'ProductCreate' }),
+      buttonOnPress: () => this.$router.push({ name: 'ProductCreate' }),
     });
   }
 
   mounted() {
     this.setViewTitle();
-    this.parentHeight = (this.$refs.table as any).offsetHeight;
-    this.fields = [
-      { key: 'name', label: 'Rodzaj drewna' },
-      { key: 'price', label: 'Cena za m3' },
-      { key: 'type', label: 'Typ produktu' },
-      { key: 'id', label: '' },
-    ];
-    this.loadProducts();
   }
 
-  async loadProducts() {
+  async loadProducts(page?: number) {
     try {
       const data = await new API('get', 'products', {
         query: {
           _limit: 30,
-          _page: (this.currentPage - 1) * 30,
+          _page: page || 0,
         },
       }).call();
-      console.log(data);
       this.products = data;
-      this.totalRows = 4; // data.totalRows;
-      this.isLoading = false;
     } catch (error) {
       console.error('error', error);
     }
@@ -107,7 +73,12 @@ export default class ProductList extends Vue {
 }
 
 .paginationWrapper {
-  display: block;
-  padding: 20px !important;
+  margin-top: auto;
+  padding: 20px;
+}
+
+.chevronIcon {
+  font-size: 1.5em;
+  color: black;
 }
 </style>

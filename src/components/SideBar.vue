@@ -6,14 +6,14 @@
     <div class="divider" />
 
     <div v-for="el in buttons" :key="el.text">
-      <div v-on:click="el.action" class="button">
+      <router-link :to="{ name: el.action }" class="button">
         <div class="buttonIcon">
           <component :is="el.icon" />
         </div>
         <div class="buttonText">
           {{ el.text }}
         </div>
-      </div>
+      </router-link>
     </div>
     <div id="logoutSegment">
       <div class="divider" />
@@ -40,108 +40,56 @@ export default class SideBar extends Vue {
 
   buttons = [
     {
-      icon: 'b-icon-book',
+      icon: 'b-icon-app',
       text: 'Katalog produktów',
-      action: this.goToProductList,
+      action: 'ProductList',
     },
     {
-      icon: 'b-icon-book',
+      icon: 'b-icon-app',
       text: 'Lista pracowników',
-      action: this.goToEmployeesList,
+      action: 'ProductList',
     },
     {
-      icon: 'b-icon-book',
+      icon: 'b-icon-app',
       text: 'Lista zamówień',
-      action: this.goToOrdersList,
+      action: 'ProductList',
     },
     {
-      icon: 'b-icon-book',
+      icon: 'b-icon-app',
       text: 'Aktualne zamówienie',
-      action: this.goToMyCart,
+      action: 'ProductList',
     },
     {
-      icon: 'b-icon-book',
+      icon: 'b-icon-app',
       text: 'Lista typów operacji produkcyjnych',
-      action: this.goToOperationsList,
+      action: 'ProductList',
     },
     {
-      icon: 'b-icon-book',
+      icon: 'b-icon-app',
       text: 'Plan produkcyjny',
-      action: this.goToProductionPlan,
+      action: 'ProductList',
     },
     {
-      icon: 'b-icon-book',
+      icon: 'b-icon-app',
       text: 'Lista dostaw',
-      action: this.goToDeliveriesList,
+      action: 'ProductList',
     },
     {
-      icon: 'b-icon-book',
+      icon: 'b-icon-app',
       text: 'Lista maszyn',
-      action: this.goToMachinesList,
+      action: 'ProductList',
     },
     {
-      icon: 'b-icon-book',
+      icon: 'b-icon-app',
       text: 'Lista magazynów',
-      action: this.goToStorageList,
+      action: 'ProductList',
     },
   ];
-
-  toServiceList() {
-    this.$router.push({ name: 'ServiceList' });
-  }
 
   logout() {
     store.dispatch(AuthAction.Logout).then(() => {
       this.$router.replace({ name: 'Login' });
     });
-  }
-
-  goToRentalsList() {
-    this.$router.push({ name: 'RentalsList' });
-  }
-
-  goToMyCart() {
-    this.$router.push({ name: 'MyCart' });
-  }
-
-  goToEmployeesList() {
-    this.$router.push({ name: 'EmployeesList' });
-  }
-
-  goToOrdersList() {
-
-  }
-
-  goToOperationsList() {
-
-  }
-
-  goToProductionPlan() {
-
-  }
-
-  goToDeliveriesList() {
-
-  }
-
-  goToMachinesList() {
-
-  }
-
-  goToStorageList() {
-
-  }
-
-  goToServiceList() {
-    this.$router.push({ name: 'ServiceList' });
-  }
-
-  goToMyServiceList() {
-    this.$router.push({ name: 'ClientServiceList' });
-  }
-
-  goToProductList() {
-    this.$router.push({ name: 'ProductList' });
   }
 
   mounted() {
@@ -174,6 +122,7 @@ export default class SideBar extends Vue {
   font-weight: 600;
   line-height: 25px;
   color: #109CF1;
+  text-decoration: none;
 }
 
 .userName {
@@ -203,6 +152,8 @@ export default class SideBar extends Vue {
   margin: 10px;
   color: #2c3e50;
   cursor: pointer;
+  text-decoration: none;
+
 }
 
 .button:hover {

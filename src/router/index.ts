@@ -29,24 +29,23 @@ const routes: Array<RouteRecordRaw> = [
     alias: '/',
     name: 'ProductList',
     component: ProductList,
-    children: [
-      {
-        path: 'create',
-        name: 'ProductCreate',
-        component: ProductCreate,
-      },
-      {
-        path: 'edit/:id',
-        name: 'ProductEdit',
-        component: ProductEdit,
-      },
-      {
-        path: ':id',
-        name: 'ProductDetails',
-        component: ProductDetails,
-      },
-    ],
   },
+  {
+    path: '/product/create',
+    name: 'ProductCreate',
+    component: ProductCreate,
+  },
+  {
+    path: '/product/edit/:id',
+    name: 'ProductEdit',
+    component: ProductEdit,
+  },
+  {
+    path: '/product/:id',
+    name: 'ProductDetails',
+    component: ProductDetails,
+  },
+
 ];
 
 const router = createRouter({

@@ -6,13 +6,13 @@ interface Options {
 }
 
 class API {
-  private method: 'get' | 'post' | 'delete';
+  private method: 'get' | 'post' | 'delete' | 'patch';
 
   private url: string;
 
   private options: Options;
 
-  constructor(method: 'get' | 'post' | 'delete', url: string, options: Options) {
+  constructor(method: 'get' | 'post' | 'delete' | 'patch', url: string, options: Options) {
     this.method = method;
     this.url = url;
     this.options = options;
