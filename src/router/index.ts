@@ -14,6 +14,11 @@ import EmployeeEdit from '../views/employees/Edit.vue';
 import EmployeeList from '../views/employees/List.vue';
 import EmployeeCreate from '../views/employees/Create.vue';
 
+import OrderList from '../views/orders/List.vue';
+import OrderDetails from '../views/orders/Details.vue';
+import OrderCreate from '../views/orders/Create.vue';
+import OrderEdit from '../views/orders/Edit.vue';
+
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/login',
@@ -86,6 +91,26 @@ const routes: Array<RouteRecordRaw> = [
     path: '/employee/:id',
     name: 'EmployeeEdit',
     component: EmployeeEdit,
+  },
+  {
+    path: '/order',
+    name: 'OrderList',
+    component: OrderList,
+  },
+  {
+    path: '/order/create',
+    name: 'OrderCreate',
+    component: OrderCreate,
+  },
+  {
+    path: '/order/edit/:id',
+    name: 'OrderEdit',
+    component: OrderEdit,
+  },
+  {
+    path: '/order/:id',
+    name: 'OrderDetails',
+    component: OrderDetails,
   },
 
 ];
