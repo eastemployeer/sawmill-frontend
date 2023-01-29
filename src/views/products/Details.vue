@@ -4,7 +4,7 @@
       <div class='column'>
         <div>
           <div class="textInfoLabel">Rodzaj drewna</div>
-          <div class="textInfoValue">{{ product.name }}</div>
+          <div class="textInfoValue">{{ product.woodTypeName }}</div>
         </div>
         <div>
           <div class="textInfoLabel">Cena za m3</div>
@@ -15,17 +15,18 @@
       <div class='column'>
         <div>
           <div class="textInfoLabel">Typ produktu</div>
-          <div class="textInfoValue">{{ product.type }}</div>
+          <div class="textInfoValue">{{ product.productTypeName }}</div>
         </div>
         <div>
           <div class="textInfoLabel">Dostępność</div>
-          <div class="textInfoValue">{{ product.availibility }}</div>
+          <div class="textInfoValue">{{ product.availableAmount }}</div>
         </div>
         <div>
           <div class="textInfoLabel">Id produktu</div>
-          <div class="textInfoValue">{{ product.id }}</div>
+          <div class="textInfoValue">{{ product.productId }}</div>
         </div>
-        <b-button class="addBtn" v-if="!isProductInCart" v-on:click='addToCart' variant="primary">Dodaj do
+        <b-button class="addBtn" v-if="!isProductInCart" v-on:click='addToCart' variant="primary"
+          :disabled="!product.availableAmount">Dodaj do
           zamówienia</b-button>
         <b-button class="addBtn" v-else disabled variant="outline-secondary">Produkt jest już w zamówieniu</b-button>
       </div>
@@ -40,7 +41,6 @@
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 import { Product } from '@/models/Product';
-import { AccountType } from '@/models/User';
 import API from '@/services/API';
 import EventBus from '@/services/EventBus';
 import store from '@/store';
@@ -54,7 +54,7 @@ import Input from '@/components/Input.vue';
 })
 export default class ProductDetails extends Vue {
   product: Product = {
-    name: '', price: 0, availibility: 0, id: 0, type: '',
+    woodTypeName: '', price: 0, availableAmount: 0, productId: 0, productTypeName: '', woodTypeId: 1, productTypeId: 1,
   };
 
   fields = [
@@ -75,19 +75,21 @@ export default class ProductDetails extends Vue {
   }
 
   addToCart() {
-    store.commit('addToCart', this.product);
+    if (!this.amount) return;
+
+    store.commit('addToCart', { ...this.product, amount: this.amount });
     alert('Dodano produkt do koszyka');
   }
 
   editProduct() {
-    this.$router.push({ name: 'ProductEdit', params: { id: String(this.product.id) } });
+    this.$router.push({ name: 'ProductEdit', params: { id: String(this.product.productId) } });
   }
 
   async removeProduct() {
     try {
-      const data = await new API('delete', `products/${this.product.id}`, {}).call(true);
+      const data = await new API('delete', `Product/${this.product.productId}`, {}).call(true);
 
-      if (data.status === 201) {
+      if (data.status === 200) {
         this.$router.back();
       } else {
         alert('Usuwanie nie powiodło się');
@@ -99,8 +101,9 @@ export default class ProductDetails extends Vue {
 
   async loadProduct(id: any) {
     try {
-      const data = await new API('get', `products/${id}`, {}).call();
+      const data = await new API('get', `Product/${id}`, {}).call();
       this.product = { ...data };
+      console.log(this.product);
     } catch (error) {
       console.error('error', error);
     }

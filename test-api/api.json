@@ -1,13 +1,6 @@
 {
   "products": [
     {
-      "id": 1,
-      "name": "Dąb",
-      "price": 60,
-      "type": "Surowe",
-      "availibility": 6000
-    },
-    {
       "id": 2,
       "name": "Jesion",
       "price": 60,
@@ -27,6 +20,86 @@
       "price": 60,
       "type": "Surowe",
       "availibility": 6000
+    }
+  ],
+  "customers": [
+    {
+      "id": 1,
+      "firstName": "Kamil",
+      "lastName": "Zab",
+      "address": {
+        "street": "Numerowa 51",
+        "postalCode": "05-379",
+        "city": "Warszawa"
+      },
+      "companyName": "W.G.U",
+      "nip": "1234567",
+      "isArchived": true
+    },
+    {
+      "id": 2,
+      "firstName": "Kamil",
+      "lastName": "Zab",
+      "address": {
+        "street": "Numerowa 51",
+        "postalCode": "05-379",
+        "city": "Warszawa"
+      },
+      "companyName": "W.G.U",
+      "nip": "1234567",
+      "isArchived": true
+    },
+    {
+      "id": 3,
+      "firstName": "Kamil",
+      "lastName": "Zab",
+      "address": {
+        "street": "Numerowa 51",
+        "postalCode": "05-379",
+        "city": "Warszawa"
+      },
+      "companyName": "W.G.U",
+      "nip": "1234567",
+      "isArchived": true
+    },
+    {
+      "id": 4,
+      "firstName": "Kamil",
+      "lastName": "Zab",
+      "address": {
+        "street": "Numerowa 51",
+        "postalCode": "05-379",
+        "city": "Warszawa"
+      },
+      "companyName": "W.G.U",
+      "nip": "1234567",
+      "isArchived": true
+    }
+  ],
+  "orders": [
+    {
+      "orderId": 1,
+      "clientId": 1,
+      "orderStateId": 1,
+      "creationDate": "",
+      "acceptanceDate": "",
+      "deliveryId": 1
+    },
+    {
+      "orderId": 1,
+      "clientId": 1,
+      "orderStateId": 1,
+      "creationDate": "",
+      "acceptanceDate": "",
+      "deliveryId": 1
+    },
+    {
+      "orderId": 1,
+      "clientId": 1,
+      "orderStateId": 1,
+      "creationDate": "",
+      "acceptanceDate": "",
+      "deliveryId": 1
     }
   ]
 }

@@ -9,16 +9,15 @@
             <Input v-model="values[index]" :label="labelVal" type="text" :id="labelVal" :placeholder="labelVal" />
           </div>
         </div>
-
         <div class="col-md-6 inputContainer">
           <div class="form-group" v-for="(labelVal, index) in labelVals1" :key="labelVal">
-            <Input v-model="values[index + 3]" :label="labelVal" type="text" :id="labelVal" :placeholder="labelVal" />
+            <Input v-model="values[index + 2]" :label="labelVal"
+              :inputType="labelVal === 'Hasło' || labelVal === 'Powtórz hasło' ? 'password' : 'text'" :id="labelVal"
+              :placeholder="labelVal" />
           </div>
         </div>
       </div>
-      <div>
-        <button type="button" class="btn btn-primary" v-on:click="register">Zarejestruj się</button>
-      </div>
+      <button type="button" class="btn btn-primary" v-on:click="register">Zarejestruj się</button>
     </div>
   </div>
 </template>
@@ -34,25 +33,25 @@ import { Options, Vue } from 'vue-class-component';
   },
 })
 export default class Login extends Vue {
-  labelVals = ['Imię', 'Nazwisko', 'Telefon'];
+  labelVals = ['Imię', 'Nazwisko'];
 
-  labelVals1 = ['Email', 'Hasło', 'Powtórz hasło'];
+  labelVals1 = ['Login', 'Hasło', 'Powtórz hasło'];
 
   values = [];
 
   async register() {
-    if (this.values[4] === this.values[5]) {
+    if (this.values[3] === this.values[4]) {
       try {
-        const data = await new API('post', 'klient', {
+        const data = await new API('post', 'employees', {
           body: {
-            imie: this.values[0],
-            nazwisko: this.values[1],
-            email: this.values[3],
-            haslo: this.values[4],
-            telefon: this.values[2],
+            firstName: this.values[0],
+            lastName: this.values[1],
+            login: this.values[2],
+            password: this.values[3],
+            employeeTypeId: 1,
           },
         }).call(true);
-        if (data.status === 201) {
+        if (data.status === 200) {
           alert('Rejestracja się powiodła!');
           this.$router.back();
         } else {
@@ -71,6 +70,10 @@ export default class Login extends Vue {
 }
 </script>
 <style scoped lang="scss">
+button {
+  margin-top: 60px;
+}
+
 .container {
   display: flex;
   width: 100%;
@@ -89,6 +92,7 @@ h4 {
   font-style: normal;
   font-weight: bold;
   line-height: 34px;
+  margin-bottom: 40px;
 
   /* Neutral / Black */
   color: #25282B;
@@ -108,6 +112,7 @@ h4 {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 30px;
 }
 
 .box {

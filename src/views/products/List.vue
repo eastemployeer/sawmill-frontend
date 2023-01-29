@@ -1,5 +1,5 @@
 <template>
-  <Table :items="products" :fields="fields" :loadItems="loadProducts" linkTo="ProductDetails" />
+  <Table :items="products" :fields="fields" :totalRows="totalRows" :loadItems="loadProducts" linkTo="ProductDetails" />
 </template>
 
 <script lang="ts">
@@ -8,6 +8,7 @@ import API from '@/services/API';
 import EventBus from '@/services/EventBus';
 import Table from '@/components/Table.vue';
 import { Options, Vue } from 'vue-class-component';
+import { Product } from '@/models/Product';
 
 @Options({
   components: {
@@ -23,19 +24,19 @@ export default class ProductList extends Vue {
 
   isLoading = true;
 
-  products: any[] = [];
+  products: Product[] = [];
 
   fields = [
-    { key: 'name', label: 'Rodzaj drewna' },
+    { key: 'woodTypeName', label: 'Rodzaj drewna' },
     { key: 'price', label: 'Cena za m3', formatter: (value: string) => `${value} zł` },
-    { key: 'type', label: 'Typ produktu' },
+    { key: 'productTypeName', label: 'Typ produktu' },
     { key: 'id', label: '' },
   ];;
 
-  @Watch('currentPage')
-  public onCurrentPageChange() {
-    this.loadProducts();
-  }
+  // @Watch('currentPage')
+  // public onCurrentPageChange() {
+  //   this.loadProducts(this.currentPage);
+  // }
 
   async setViewTitle() {
     await EventBus.$emit('layout-view', {
@@ -49,15 +50,15 @@ export default class ProductList extends Vue {
     this.setViewTitle();
   }
 
-  async loadProducts(page?: number) {
+  async loadProducts(page: number, limit: number) {
     try {
-      const data = await new API('get', 'products', {
-        query: {
-          _limit: 30,
-          _page: page || 0,
-        },
-      }).call();
-      this.products = data;
+      const data = await new API('get', 'Product').call();
+      console.log(data);
+
+      if (this.products.length === 0) this.totalRows = data.length;
+
+      // page + limit
+      this.products = data.slice((page - 1) * limit, page * limit);
     } catch (error) {
       console.error('error', error);
     }
