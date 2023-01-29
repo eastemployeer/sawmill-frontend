@@ -1,7 +1,7 @@
 import { Address } from '@/models/Address';
 
 export interface ClientDetails {
-  id: number;
+  clientId: number;
   firstName: string;
   lastName: string;
   address: Address;

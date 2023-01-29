@@ -31,7 +31,7 @@ export default class ProductList extends Vue {
     { key: 'price', label: 'Cena za m3', formatter: (value: string) => `${value} zł` },
     { key: 'productTypeName', label: 'Typ produktu' },
     { key: 'id', label: '' },
-  ];;
+  ];
 
   // @Watch('currentPage')
   // public onCurrentPageChange() {

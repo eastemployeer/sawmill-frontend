@@ -1,39 +1,53 @@
 <template>
   <div class="viewPadding">
+    <Table :items="order.orderDetails" :fields="fields" :loadItems="loadOrder" />
     <div class="infoSegment">
       <div class='column'>
         <div>
           <div class="textInfoLabel">Klient</div>
-          <div class="textInfoValue">{{ order.clientDetails.firstName+" "+order.clientDetails.lastName }}</div>
+          <div class="textInfoValue">{{ order.clientDetails.firstName + ' ' + order.clientDetails.lastName }}</div>
         </div>
         <div>
           <div class="textInfoLabel">Data złożenia zamówienia</div>
-          <div class="textInfoValue">{{ order.creationDate }}</div>
+          <div class="textInfoValue">{{ new Date(order.creationDate).toISOString().split('T')[0] }}</div>
         </div>
         <div>
           <div class="textInfoLabel">Koszt całości</div>
-          <div class="textInfoValue">{{ order.price + ' zł' }}</div>
+          <div class="textInfoValue">{{ order.orderPrice + ' zł' }}</div>
         </div>
-        <Input v-model="amount" inputType="number" label="Ilość" placeholder="500" />
       </div>
       <div class='column'>
         <div>
           <div class="textInfoLabel">Numer zamówienia</div>
-          <div class="textInfoValue">{{ order.number }}</div>
+          <div class="textInfoValue">{{ order.orderId }}</div>
         </div>
         <div>
-          <div class="textInfoLabel">Sata potwierdzenia zamówienia</div>
-          <div class="textInfoValue">{{ order.acceptanceDate }}</div>
+          <div class="textInfoLabel">Data potwierdzenia zamówienia</div>
+          <div class="textInfoValue">{{
+            order.acceptanceDate ? new Date(order.acceptanceDate).toISOString().split('T')[0]
+              : '-'
+          }}</div>
         </div>
         <div>
           <div class="textInfoLabel">Status</div>
-          <div class="textInfoValue">{{ order.state }}</div>
+          <div class="textInfoValue">{{ order.orderState }}</div>
         </div>
       </div>
-      <div>
-        <b-button v-on:click='editOrder' variant="primary">Przeznacz do wysyłki</b-button>
-        <b-button v-on:click='cancelOrder' variant="danger" :style="{ marginLeft: '25px' }">Anuluj</b-button>
-      </div>
+    </div>
+    <div v-if="!isOrderCanceled()">
+      <b-button v-on:click='showDeliveryDetails' variant="primary">Sprawdź szczegóły
+        dostawy</b-button>
+      <b-button v-if="isOrderCreated()" v-on:click='modyfyOrder(3)' variant="primary"
+        :style="{ marginLeft: '25px' }">Potwierdź
+      </b-button>
+      <b-button v-if="isOrderAccepted()" v-on:click='modyfyOrder(5)' variant="primary"
+        :style="{ marginLeft: '25px' }">Wyślij
+      </b-button>
+      <b-button v-if="isOrderSend()" v-on:click='modyfyOrder(6)' variant="primary"
+        :style="{ marginLeft: '25px' }">Dostarczono
+      </b-button>
+      <b-button v-if="!isOrderSend() && !isOrderDelivered()" v-on:click='modyfyOrder(2)' variant="danger"
+        :style="{ marginLeft: '25px' }">Anuluj</b-button>
     </div>
   </div>
 </template>
@@ -41,47 +55,79 @@
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 import { Order } from '@/models/Order';
-import { AccountType } from '@/models/User';
 import API from '@/services/API';
 import EventBus from '@/services/EventBus';
-import store from '@/store';
-import { CartAction } from '@/store/modules/CartModule';
+import Table from '@/components/SmallTable.vue';
 import Input from '@/components/Input.vue';
 
 @Options({
   components: {
     Input,
+    Table,
   },
 })
 export default class OrderDetails extends Vue {
   order: Order = {
-    name: '', price: 0, availibility: 0, id: 0, type: '',
+    orderId: 0,
+    orderNumber: 0,
+    clientDetails: {
+      clientId: 0,
+      firstName: '',
+      lastName: '',
+      address:
+      {
+        street: '',
+        postalCode: '',
+        city: '',
+      },
+      companyName: '',
+      IsArchived: false,
+      NIP: '',
+    },
+    creationDate: new Date(),
+    orderState: '',
+    orderDetails: [],
+    orderPrice: 0,
   };
 
   fields = [
-    { key: 'label', label: 'Nazwa cechy' },
-    { key: 'value', label: 'Wartość' },
+    { key: 'woodType', label: 'Rodzaj drewna' },
+    { key: 'price', label: 'Cena za m3', formatter: (value: string) => `${value} zł` },
+    { key: 'productType', label: 'Typ produktu' },
+    { key: 'amount', label: 'Ilość' },
+    { key: 'fullPrice', label: 'Łączna cena', formatter: (value: string) => `${value} zł` },
   ];
 
   amount = 0;
+
+  ordersDetails: any[] = [];
 
   mounted() {
     this.loadOrder(this.$route.params.id);
     this.setViewTitle();
   }
 
-  editOrder() {
-    this.$router.push({ name: 'OrderEdit', params: { id: String(this.order.id) } });
+  sendOrder() {
+    this.$router.push({ name: 'OrderEdit', params: { id: String(this.order.orderId) } });
   }
 
-  async cancelOrder() {
-    try {
-      const data = await new API('delete', `orders/${this.order.id}`, {}).call(true);
+  showDeliveryDetails() {
+    this.$router.push({ name: 'DeliveryDetails', params: { id: String(this.order.orderId) } });
+  }
 
-      if (data.status === 201) {
+  async modyfyOrder(stateId: number) {
+    try {
+      console.log('stateId', stateId);
+      const data = await new API('put', `order/${this.order.orderId}`, {
+        query: {
+          orderStateId: stateId,
+        },
+      }).call(true);
+
+      if (data.status === 200) {
         this.$router.back();
       } else {
-        alert('Anulowanie nie powiodło się');
+        alert('Akcja nie powiodła się');
       }
     } catch (error) {
       console.error('error', error);
@@ -90,23 +136,46 @@ export default class OrderDetails extends Vue {
 
   async loadOrder(id: any) {
     try {
-      const data = await new API('get', `orders/${id}`, {}).call();
+      const data = await new API('get', `order/${id}`, {}).call();
       this.order = { ...data };
+      this.ordersDetails = { ...data.orderDetails };
     } catch (error) {
       console.error('error', error);
     }
   }
 
+  isOrderCanceled() {
+    return this.order.orderState === 'Anulowane';
+  }
+
+  isOrderDelivered() {
+    return this.order.orderState === 'Dostarczone';
+  }
+
+  isOrderSend() {
+    return this.order.orderState === 'Wyslane';
+  }
+
+  isOrderAccepted() {
+    return this.order.orderState === 'Zaakceptowane';
+  }
+
+  isOrderCreated() {
+    return this.order.orderState === 'Utworzone';
+  }
+
   async setViewTitle() {
-    await EventBus.$emit('layout-view', { title: 'Szczegóły produktu' });
+    await EventBus.$emit('layout-view', { title: 'Szczegóły zamówienie' });
   }
 }
 </script>
 
-<style lang="scss" scoped>
+<style>
 .infoSegment {
   display: flex;
   width: 100%;
+  margin-top: 5%;
+  margin-bottom: 5%;
 }
 
 .inputComponent {

@@ -95,7 +95,7 @@
       },
       "creationDate": "2023-01-23T18:30:23.800Z",
       "acceptanceDate": "2023-01-23T18:30:23.800Z",
-      "state": 2,
+      "state": "Utworzone",
       "orderDetails": [{  
         "id": 1,
         "woodType": "Buk",
@@ -124,7 +124,7 @@
       },
       "creationDate": "2023-01-21T18:30:23.800Z",
       "acceptanceDate": "2023-01-21T18:30:23.800Z",
-      "state": 2,
+      "state": "Anulowane",
       "orderDetails": [{  
         "id": 1,
         "woodType": "Buk",

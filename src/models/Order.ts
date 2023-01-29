@@ -2,12 +2,12 @@ import { OrderDetails } from '@/models/OrderDetails';
 import { ClientDetails } from '@/models/ClientDetails';
 
 export interface Order {
-    id: number;
-    number: number;
+    orderId: number;
+    orderNumber: number;
     clientDetails: ClientDetails;
     creationDate: Date;
     acceptanceDate?: Date;
-    state: number;
+    orderState: string;
     orderDetails: OrderDetails[];
-    price: number;
+    orderPrice: number;
   }

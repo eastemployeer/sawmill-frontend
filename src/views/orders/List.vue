@@ -26,13 +26,21 @@ export default class OrderList extends Vue {
   orders: any[] = [];
 
   fields = [
-    { key: 'number', label: 'Numer zamówienia' },
-    { key: 'creationDate', label: 'Data utworzenia' },
-    { key: 'acceptanceDate', label: 'Data potwierdzenia' },
-    { key: 'price', label: 'Cena za m3', formatter: (value: string) => `${value} zł` },
-    { key: 'state', label: 'Status' },
+    { key: 'orderId', label: 'Numer zamówienia' },
+    { key: 'creationDate', label: 'Data utworzenia', formatter: (date: Date) => (date ? `${new Date(date).toISOString().split('T')[0]}` : '-') },
+    { key: 'acceptanceDate', label: 'Data potwierdzenia', formatter: (date: Date) => (date ? `${new Date(date).toISOString().split('T')[0]}` : '-') },
+    { key: 'orderPrice', label: 'Cena za m3', formatter: (value: string) => `${value} zł` },
+    { key: 'orderState', label: 'Status' },
     { key: 'id', label: '' },
   ];
+  // id: number;
+  //   number: number;
+  //   clientDetails: ClientDetails;
+  //   creationDate: Date;
+  //   acceptanceDate?: Date;
+  //   state: number;
+  //   orderDetails: OrderDetails[];
+  //   price: number;
 
   @Watch('currentPage')
   public onCurrentPageChange() {
@@ -42,8 +50,6 @@ export default class OrderList extends Vue {
   async setViewTitle() {
     await EventBus.$emit('layout-view', {
       title: 'Lista zamówień',
-      buttonText: 'Dodaj nowe zamówienie',
-      buttonOnPress: () => this.$router.push({ name: 'OrderCreate' }),
     });
   }
 
@@ -53,7 +59,7 @@ export default class OrderList extends Vue {
 
   async loadOrders(page?: number) {
     try {
-      const data = await new API('get', 'orders', {
+      const data = await new API('get', 'order', {
         query: {
           _limit: 30,
           _page: page || 0,

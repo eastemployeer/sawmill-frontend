@@ -1,5 +1,5 @@
 export interface OrderDetails {
-  id: number;
+  orderDetailId: number;
   woodType: string;
   productType: string;
   price: number;
