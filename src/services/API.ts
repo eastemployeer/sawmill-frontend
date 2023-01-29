@@ -6,13 +6,13 @@ interface Options {
 }
 
 class API {
-  private method: 'get' | 'post' | 'delete' | 'patch';
+  private method: 'get' | 'post' | 'delete' | 'patch' | 'put';
 
   private url: string;
 
-  private options: Options;
+  private options?: Options;
 
-  constructor(method: 'get' | 'post' | 'delete' | 'patch', url: string, options: Options) {
+  constructor(method: 'get' | 'post' | 'delete' | 'patch' | 'put', url: string, options?: Options) {
     this.method = method;
     this.url = url;
     this.options = options;
@@ -21,11 +21,11 @@ class API {
   public async call(getStatus = false) {
     const config = {
       method: this.method,
-      url: `http://localhost:3000/${this.url}?${new URLSearchParams(this.options.query)}`,
+      url: `http://localhost:8080/api/${this.url}?${new URLSearchParams(this.options?.query)}`,
       headers: {
         'Content-Type': 'application/json',
       },
-      data: this.options.body,
+      data: this.options?.body,
     };
 
     let response;

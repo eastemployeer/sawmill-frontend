@@ -10,13 +10,13 @@
       </template>
 
       <template #cell(id)="data">
-        <router-link :to="{ name: linkTo, params: { id: data.item.id } }">
+        <router-link :to="{ name: linkTo, params: { id: data.item[pathName + 'Id'] } }">
           <b-icon-chevron-right class="chevronIcon" />
         </router-link>
       </template>
     </b-table>
     <div class="paginationWrapper">
-      <b-pagination v-model="currentPage" :total-rows="totalRows" :per-page="30" last-number />
+      <b-pagination v-model="currentPage" :total-rows="totalRows" :per-page="12" last-number />
     </div>
   </div>
 </template>
@@ -26,12 +26,15 @@ import { Watch, Prop } from 'vue-property-decorator';
 import { Options, Vue } from 'vue-class-component';
 
 @Options({})
-export default class ProductList extends Vue {
+export default class Table extends Vue {
   parentHeight = 0;
 
   currentPage = 1;
 
-  totalRows = 4 // just for now;
+  limit = 12;
+
+  @Prop({ default: 1 })
+  totalRows!: number;
 
   isLoading = true;
 
@@ -39,7 +42,7 @@ export default class ProductList extends Vue {
   items!: any[];
 
   @Prop()
-  loadItems!: (page: number) => void;
+  loadItems!: (page: number, limit: number) => void;
 
   @Prop({ default: [] })
   fields!: any[];
@@ -49,13 +52,18 @@ export default class ProductList extends Vue {
 
   @Watch('currentPage')
   public onCurrentPageChange() {
-    this.loadItems(this.currentPage);
+    this.loadItems(this.currentPage, this.limit);
+  }
+
+  get pathName() {
+    return this.$route.fullPath.split('/')[1];
   }
 
   mounted() {
     this.parentHeight = (this.$refs.table as any).offsetHeight;
-    this.loadItems(this.currentPage);
+    this.loadItems(this.currentPage, this.limit);
     this.isLoading = false;
+    console.log(this.totalRows);
   }
 }
 </script>

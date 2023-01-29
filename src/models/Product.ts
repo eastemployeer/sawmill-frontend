@@ -1,12 +1,9 @@
-export interface IRodzaj {
-  nazwa: string;
-  rodzajSezonu: string | null;
-}
-
 export interface Product {
-  id: number;
-  name: string;
+  productId: number;
   price: number;
-  type: string;
-  availibility: number;
+  productTypeId: number;
+  productTypeName: string;
+  woodTypeId: number;
+  woodTypeName: string;
+  availableAmount: number;
 }

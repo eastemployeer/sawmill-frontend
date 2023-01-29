@@ -15,12 +15,12 @@ import { Prop, Watch } from 'vue-property-decorator';
 
 @Options({})
 export default class Input extends Vue {
-  @Watch('value') onValueChange(newValue: string) {
+  @Watch('modelValue') onValueChange(newValue: string) {
     this.model = newValue;
   }
 
   @Prop({ default: '' })
-  value!: string;
+  modelValue!: string;
 
   @Prop({ default: 'Podaj wartość' })
   label!: string;
@@ -38,14 +38,14 @@ export default class Input extends Vue {
 
   @Prop({ default: false }) disabled!: boolean;
 
-  model = this.value;
+  model = this.modelValue;
 
   created() {
     if (this.model === null) this.model = '';
   }
 
   onInput(event: any) {
-    this.$emit('input', event.target.value);
+    this.$emit('update:modelValue', event.target.value);
   }
 }
 </script>

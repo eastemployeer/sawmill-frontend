@@ -4,7 +4,7 @@ import {
 
 import { AccountType, User } from '@/models/User';
 import {
-  AuthService, LoginKlientRequest, LoginPracownikRequest, LoginResponse,
+  AuthService, LoginPracownikRequest, LoginResponse,
 } from '@/services/AuthService';
 
 // eslint-disable-next-line no-shadow
@@ -23,6 +23,8 @@ export interface AuthState {
 export default class AuthModule extends VuexModule<AuthState> {
     public token: string | null = null;
 
+    public refreshToken: string | null = null;
+
     public currentUser: User | null = null;
 
     public accountType: AccountType | null = null;
@@ -34,8 +36,8 @@ export default class AuthModule extends VuexModule<AuthState> {
     @Mutation
     handleLogin(data: LoginResponse) {
       this.token = data.token;
+      this.refreshToken = data.refreshToken;
       this.currentUser = data.user;
-      this.accountType = data.accountType;
     }
 
     @Mutation
@@ -46,9 +48,9 @@ export default class AuthModule extends VuexModule<AuthState> {
     }
 
     @Action({ rawError: true })
-    async [AuthAction.AttemptLogin](data: LoginKlientRequest) {
+    async [AuthAction.AttemptLogin](data: LoginPracownikRequest) {
       try {
-        const response = await AuthService.loginKlient(data);
+        const response = await AuthService.loginPracownik(data);
         if (response.status === 202) {
           this.context.commit('handleLogin', response);
         }

@@ -1,11 +1,15 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
-import store from '@/store';
 import Login from '../views/auth/Login.vue';
 import Register from '../views/auth/Register.vue';
 import ProductList from '../views/products/List.vue';
 import ProductDetails from '../views/products/Details.vue';
 import ProductCreate from '../views/products/Create.vue';
 import ProductEdit from '../views/products/Edit.vue';
+import OperationList from '../views/productionOperations/List.vue';
+import OperationDetails from '../views/productionOperations/Details.vue';
+import OperationCreate from '../views/productionOperations/Create.vue';
+import OperationEdit from '../views/productionOperations/Edit.vue';
+import MyCart from '../views/MyCart.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -44,6 +48,31 @@ const routes: Array<RouteRecordRaw> = [
     path: '/product/:id',
     name: 'ProductDetails',
     component: ProductDetails,
+  },
+  {
+    path: '/operation',
+    name: 'OperationList',
+    component: OperationList,
+  },
+  {
+    path: '/operation/create',
+    name: 'OperationCreate',
+    component: OperationCreate,
+  },
+  {
+    path: '/operation/edit/:id',
+    name: 'OperationEdit',
+    component: OperationEdit,
+  },
+  {
+    path: '/operation/:id',
+    name: 'OperationDetails',
+    component: OperationDetails,
+  },
+  {
+    path: '/cart',
+    name: 'Cart',
+    component: MyCart,
   },
 
 ];

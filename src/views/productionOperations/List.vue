@@ -1,5 +1,6 @@
 <template>
-  <Table :items="products" :fields="fields" :totalRows="totalRows" :loadItems="loadProducts" linkTo="ProductDetails" />
+  <Table :items="operations" :fields="fields" :totalRows="totalRows" :loadItems="loadOperations"
+    linkTo="OperationDetails" />
 </template>
 
 <script lang="ts">
@@ -8,14 +9,14 @@ import API from '@/services/API';
 import EventBus from '@/services/EventBus';
 import Table from '@/components/Table.vue';
 import { Options, Vue } from 'vue-class-component';
-import { Product } from '@/models/Product';
+import { Operation } from '@/models/Operation';
 
 @Options({
   components: {
     Table,
   },
 })
-export default class ProductList extends Vue {
+export default class OperationList extends Vue {
   parentHeight = 0;
 
   currentPage = 1;
@@ -24,14 +25,15 @@ export default class ProductList extends Vue {
 
   isLoading = true;
 
-  products: Product[] = [];
+  operations: Operation[] = [];
 
   fields = [
-    { key: 'woodTypeName', label: 'Rodzaj drewna' },
-    { key: 'price', label: 'Cena za m3', formatter: (value: string) => `${value} zł` },
-    { key: 'productTypeName', label: 'Typ produktu' },
+    { key: 'name', label: 'Nazwa operacji' },
+    { key: 'duration', label: 'Czas trwania' },
+    { key: 'sourceProductTypeId', label: 'Rodzaj drewna' },
+    { key: 'sourceOutputRatio', label: 'Stosunek', formatter: (value: string) => `${value}:1` },
     { key: 'id', label: '' },
-  ];;
+  ];
 
   // @Watch('currentPage')
   // public onCurrentPageChange() {
@@ -40,9 +42,9 @@ export default class ProductList extends Vue {
 
   async setViewTitle() {
     await EventBus.$emit('layout-view', {
-      title: 'Katalog produktów',
-      buttonText: 'Dodaj nowy produkt',
-      buttonOnPress: () => this.$router.push({ name: 'ProductCreate' }),
+      title: 'Lista typów operacji produkcyjnych',
+      buttonText: 'Dodaj nowy typ operacji',
+      buttonOnPress: () => this.$router.push({ name: 'OperationCreate' }),
     });
   }
 
@@ -50,14 +52,14 @@ export default class ProductList extends Vue {
     this.setViewTitle();
   }
 
-  async loadProducts(page: number, limit: number) {
+  async loadOperations(page: number, limit: number) {
     try {
-      const data = await new API('get', 'Product').call();
+      const data = await new API('get', 'Operation').call();
 
-      if (this.products.length === 0) this.totalRows = data.length;
+      if (this.operations.length === 0) this.totalRows = data.length;
 
       // page + limit
-      this.products = data.slice((page - 1) * limit, page * limit);
+      this.operations = data.slice((page - 1) * limit, page * limit);
     } catch (error) {
       console.error('error', error);
     }
