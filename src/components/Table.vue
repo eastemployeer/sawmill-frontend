@@ -9,14 +9,20 @@
         </div>
       </template>
 
-      <template #cell(id)="data">
+      <template #cell(id)="data" v-if="linkTo">
         <router-link :to="{ name: linkTo, params: { id: data.item[pathName + 'Id'] } }">
           <b-icon-chevron-right class="chevronIcon" />
         </router-link>
       </template>
+      <template #cell(id)="data" v-else-if="linkEdit">
+        <b-icon-trash v-if="deleteAction" class="trashIcon" @click="deleteItem(data.item[pathName + 'Id'])" />
+        <router-link :to="{ name: linkEdit, params: { id: data.item[pathName + 'Id'] } }">
+          <b-icon-pencil class="pencilIcon" />
+        </router-link>
+      </template>
     </b-table>
     <div class="paginationWrapper">
-      <b-pagination v-model="currentPage" :total-rows="totalRows" :per-page="12" last-number />
+      <b-pagination v-model="currentPage" :total-rows="totalRows" :per-page="limit" last-number />
     </div>
   </div>
 </template>
@@ -31,7 +37,7 @@ export default class Table extends Vue {
 
   currentPage = 1;
 
-  limit = 12;
+  limit = 10;
 
   @Prop({ default: 1 })
   totalRows!: number;
@@ -44,6 +50,12 @@ export default class Table extends Vue {
   @Prop()
   loadItems!: (page: number, limit: number) => void;
 
+  @Prop()
+  deleteAction!: (id: number) => void;
+
+  @Prop()
+  linkEdit!: string;
+
   @Prop({ default: [] })
   fields!: any[];
 
@@ -52,6 +64,11 @@ export default class Table extends Vue {
 
   @Watch('currentPage')
   public onCurrentPageChange() {
+    this.loadItems(this.currentPage, this.limit);
+  }
+
+  async deleteItem(id: number) {
+    await this.deleteAction(id);
     this.loadItems(this.currentPage, this.limit);
   }
 
@@ -80,8 +97,20 @@ export default class Table extends Vue {
   padding: 20px;
 }
 
-.chevronIcon {
+.chevronIcon,
+.pencilIcon,
+.trashIcon {
   font-size: 1.5em;
+}
+
+.chevronIcon,
+.pencilIcon {
   color: black;
+}
+
+.trashIcon {
+  margin-right: 20px;
+  cursor: pointer;
+  color: red;
 }
 </style>

@@ -2,9 +2,9 @@ import {
   Action, Module, Mutation, VuexModule,
 } from 'vuex-module-decorators';
 
-import { AccountType, User } from '@/models/User';
+import { User } from '@/models/User';
 import {
-  AuthService, LoginPracownikRequest, LoginResponse,
+  AuthService, LoginRequest, LoginResponse,
 } from '@/services/AuthService';
 
 // eslint-disable-next-line no-shadow
@@ -16,7 +16,6 @@ export enum AuthAction {
 export interface AuthState {
   token: string | null;
   currentUser: User | null;
-  accountType: AccountType | null;
 }
 
 @Module
@@ -27,8 +26,6 @@ export default class AuthModule extends VuexModule<AuthState> {
 
     public currentUser: User | null = null;
 
-    public accountType: AccountType | null = null;
-
     get isAuthenticated(): boolean {
       return !!this.token;
     }
@@ -37,23 +34,25 @@ export default class AuthModule extends VuexModule<AuthState> {
     handleLogin(data: LoginResponse) {
       this.token = data.token;
       this.refreshToken = data.refreshToken;
-      this.currentUser = data.user;
+      this.currentUser = {
+        userId: data.userId,
+        name: data.name,
+        surname: data.surname,
+        roleId: data.roleId,
+      };
     }
 
     @Mutation
     handleLogout() {
       this.token = null;
       this.currentUser = null;
-      this.accountType = null;
     }
 
     @Action({ rawError: true })
-    async [AuthAction.AttemptLogin](data: LoginPracownikRequest) {
+    async [AuthAction.AttemptLogin](data: LoginRequest) {
       try {
-        const response = await AuthService.loginPracownik(data);
-        if (response.status === 202) {
-          this.context.commit('handleLogin', response);
-        }
+        const response = await AuthService.login(data);
+        this.context.commit('handleLogin', response);
       } catch (error) {
         console.error('error', error);
       }

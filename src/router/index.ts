@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
+import store from '@/store';
 import Login from '../views/auth/Login.vue';
 import Register from '../views/auth/Register.vue';
 import ProductList from '../views/products/List.vue';
@@ -6,10 +7,12 @@ import ProductDetails from '../views/products/Details.vue';
 import ProductCreate from '../views/products/Create.vue';
 import ProductEdit from '../views/products/Edit.vue';
 import OperationList from '../views/productionOperations/List.vue';
-import OperationDetails from '../views/productionOperations/Details.vue';
 import OperationCreate from '../views/productionOperations/Create.vue';
 import OperationEdit from '../views/productionOperations/Edit.vue';
 import MyCart from '../views/MyCart.vue';
+import EmployeeEdit from '../views/employees/Edit.vue';
+import EmployeeList from '../views/employees/List.vue';
+import EmployeeCreate from '../views/employees/Create.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -65,14 +68,24 @@ const routes: Array<RouteRecordRaw> = [
     component: OperationEdit,
   },
   {
-    path: '/operation/:id',
-    name: 'OperationDetails',
-    component: OperationDetails,
-  },
-  {
     path: '/cart',
     name: 'Cart',
     component: MyCart,
+  },
+  {
+    path: '/employee',
+    name: 'EmployeeList',
+    component: EmployeeList,
+  },
+  {
+    path: '/employee/create',
+    name: 'EmployeeCreate',
+    component: EmployeeCreate,
+  },
+  {
+    path: '/employee/:id',
+    name: 'EmployeeEdit',
+    component: EmployeeEdit,
   },
 
 ];
@@ -82,14 +95,14 @@ const router = createRouter({
   routes,
 });
 
-// router.beforeEach((to, _from, next) => {
-//   if (!store.state.auth.token && (to.name !== 'Login' && to.name !== 'Register')) {
-//     next({ name: 'Login' });
-//   } else if (store.state.auth.token && (to.name === 'Login' || to.name === 'Register')) {
-//     next({ name: 'ProductList' });
-//   } else {
-//     next();
-//   }
-// });
+router.beforeEach((to, _from, next) => {
+  if (!store.state.auth.token && (to.name !== 'Login' && to.name !== 'Register')) {
+    next({ name: 'Login' });
+  } else if (store.state.auth.token && (to.name === 'Login' || to.name === 'Register')) {
+    next({ name: 'ProductList' });
+  } else {
+    next();
+  }
+});
 
 export default router;

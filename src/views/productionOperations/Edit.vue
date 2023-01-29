@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ProductModify v-model="product" buttonLabel="Zapisz zmiany" :buttonOnClick="updateProduct" />
+    <OperationModify v-model="operation" buttonLabel="Zapisz zmiany" :buttonOnClick="updateOperation" />
   </div>
 </template>
 
@@ -11,47 +11,49 @@ import { Product } from '@/models/Product';
 import API from '@/services/API';
 import EventBus from '@/services/EventBus';
 import Axios from 'axios';
-import ProductModify from './_Modifi.vue';
+import { Operation } from '@/models/Operation';
+import OperationModify from './_Modifi.vue';
 
 @Options({
   components: {
-    ProductModify,
+    OperationModify,
   },
 })
-export default class ProductEdit extends Vue {
-  product: Product = {
-    woodTypeName: '', price: 0, availableAmount: 0, productId: 0, productTypeName: '', woodTypeId: 1, productTypeId: 1,
+export default class OperationEdit extends Vue {
+  //   export interface Operation {
+  //     operationId: number;
+  //     name: string;
+  //     description: string;
+  //     sourceProductTypeId: number;
+  //     outputProductTypeId: number;
+  //     sourceOutputRatio: number;
+  //     duration: number;
+  //     isArchived: boolean;
+  // }
+  operation: Operation = {
+    operationId: 0, name: '', description: '', sourceProductTypeId: 0, outputProductTypeId: 0, sourceOutputRatio: 1, duration: 1, isArchived: false,
   };
 
-  productTypes = []
-
-  woodTypes = []
-
   mounted() {
-    this.loadProduct();
+    this.loadOperation();
     this.setViewTitle();
   }
 
-  async loadProduct() {
+  async loadOperation() {
     try {
-      const data = await new API('get', `Product/${this.$route.params.id}`, {}).call();
-      this.product = { ...data };
-      console.log(this.product);
+      const data = await new API('get', `Operation/${this.$route.params.id}`, {}).call();
+      this.operation = { ...data };
+      console.log(this.operation);
     } catch (error) {
       console.error('error', error);
     }
   }
 
-  async updateProduct() {
+  async updateOperation() {
     try {
-      console.log(this.product);
-      const data = await new API('put', 'Product', {
-        body: {
-          productId: this.product.productId,
-          price: Number(this.product.price),
-          productTypeId: this.product.productTypeId,
-          woodTypeId: this.product.woodTypeId,
-        },
+      console.log(this.operation);
+      const data = await new API('put', 'Operation', {
+        body: this.operation,
       }).call(true);
 
       if (data.status === 400) {

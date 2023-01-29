@@ -1,28 +1,28 @@
-import { User } from '@/models/User';
-
 import API from './API';
 
 export interface LoginResponse {
+  userId: number;
   token: string;
   refreshToken: string;
-  user: User;
+  name: string;
+  surname: string;
+  roleId: number;
   status: number;
 }
 
-export interface LoginPracownikRequest {
+export interface LoginRequest {
   login: string;
   password: string;
 }
 
 export class AuthService {
-  public static async loginPracownik(data: LoginPracownikRequest): Promise<LoginResponse> {
-    const res = await new API('post', 'login/pracownik', {
-      body: {
-        password: data.password,
-        login: data.login,
+  public static async login(data: LoginRequest): Promise<LoginResponse> {
+    const res = await new API('post', 'SignIn/singIn', {
+      query: {
+        hashedPassword: data.password,
+        loginName: data.login,
       },
     }).call(true);
-
     return res.data;
   }
 }

@@ -1,46 +1,41 @@
 <template>
   <div>
-    <ProductModify v-model="newProduct" buttonLabel="Dodaj nowy produkt" :buttonOnClick="createProduct" />
+    <OperationModify v-model="operation" buttonLabel="Dodaj nową operację" :buttonOnClick="createOperation" />
   </div>
 </template>
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
-
-import { Product } from '@/models/Product';
 import API from '@/services/API';
 import EventBus from '@/services/EventBus';
-import ProductModify from './_Modifi.vue';
+import { Operation } from '@/models/Operation';
+import OperationModify from './_Modifi.vue';
 
 @Options({
   components: {
-    ProductModify,
+    OperationModify,
   },
 })
 export default class ProductCreate extends Vue {
-  newProduct: Product = {
-    woodTypeName: '', price: 0, availableAmount: 0, productId: 0, productTypeName: '', woodTypeId: 1, productTypeId: 1,
+  operation: Operation = {
+    operationId: 0, name: '', description: '', sourceProductTypeId: 0, outputProductTypeId: 0, sourceOutputRatio: 1, duration: 1, isArchived: false,
   };
 
   mounted() {
     this.setViewTitle();
   }
 
-  async createProduct() {
+  async createOperation() {
     try {
-      const data = await new API('post', 'Product', {
-        body: {
-          price: Number(this.newProduct.price),
-          productTypeId: this.newProduct.productTypeId,
-          woodTypeId: this.newProduct.woodTypeId,
-        },
+      const data = await new API('post', 'Operation', {
+        body: this.operation,
       }).call(true);
 
       if (data.status === 400) {
         alert('Wprowadzono błędne dane');
-      } else if (data.status === 201) {
+      } else if (data.status === 200) {
+        alert('Stworzono nową operację');
         this.$router.back();
-        alert('Stworzono produkt');
       } else {
         alert('Nieznany błąd');
       }
@@ -50,7 +45,7 @@ export default class ProductCreate extends Vue {
   }
 
   async setViewTitle() {
-    await EventBus.$emit('layout-view', { title: 'Keator produktu' });
+    await EventBus.$emit('layout-view', { title: 'Keator typu operacji' });
   }
 }
 </script>

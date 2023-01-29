@@ -83,10 +83,10 @@ export default class MyCart extends Vue {
 
   clients: Client[] = [];
 
-  selectedClient?: Client;
+  selectedClient?: number;
 
   get clientsOptions() {
-    return this.clients.map((client) => ({ value: client, text: `${client.firstName} ${client.lastName}` }));
+    return this.clients.map((client) => ({ value: client.clientId, text: `${client.firstName} ${client.lastName}` }));
   }
 
   fields = [
@@ -116,17 +116,17 @@ export default class MyCart extends Vue {
     try {
       const data = await new API('post', 'order', {
         body: {
-          clientId: 1,
+          clientId: this.selectedClient,
           orderDetails,
         },
       }).call(true);
 
       if (data.status === 400) {
         alert('Wprowadzono błędne dane');
-      } else if (data.status === 201) {
+      } else if (data.status === 200) {
         store.commit('clearCart');
-        this.$router.replace({ name: 'RentalsList' });
-        alert('Stworzono rezerwacje');
+        alert('Stworzono zamówienie');
+        this.$router.replace({ name: 'OrderList' });
       } else {
         alert('Nieznany błąd');
       }

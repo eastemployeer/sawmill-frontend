@@ -53,6 +53,7 @@ export default class ProductList extends Vue {
   async loadProducts(page: number, limit: number) {
     try {
       const data = await new API('get', 'Product').call();
+      console.log(data);
 
       if (this.products.length === 0) this.totalRows = data.length;
 

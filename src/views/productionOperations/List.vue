@@ -1,6 +1,7 @@
+<!-- eslint-disable max-len -->
 <template>
   <Table :items="operations" :fields="fields" :totalRows="totalRows" :loadItems="loadOperations"
-    linkTo="OperationDetails" />
+    linkEdit="OperationEdit" :deleteAction="removeOperation" />
 </template>
 
 <script lang="ts">
@@ -10,6 +11,11 @@ import EventBus from '@/services/EventBus';
 import Table from '@/components/Table.vue';
 import { Options, Vue } from 'vue-class-component';
 import { Operation } from '@/models/Operation';
+
+interface ProductType {
+  name: string;
+  productTypeId: number;
+}
 
 @Options({
   components: {
@@ -27,13 +33,39 @@ export default class OperationList extends Vue {
 
   operations: Operation[] = [];
 
+  productTypes: any[] = []
+
   fields = [
     { key: 'name', label: 'Nazwa operacji' },
     { key: 'duration', label: 'Czas trwania' },
-    { key: 'sourceProductTypeId', label: 'Rodzaj drewna' },
+    { key: 'sourceProductTypeId', label: 'Wejściowy typ produktu', formatter: (value: number) => this.productTypes.find((type) => type.value === value).text },
+    { key: 'outputProductTypeId', label: 'Wynikowy typ produktu', formatter: (value: number) => this.productTypes.find((type) => type.value === value).text },
     { key: 'sourceOutputRatio', label: 'Stosunek', formatter: (value: string) => `${value}:1` },
     { key: 'id', label: '' },
   ];
+
+  async removeOperation(operationId: number) {
+    try {
+      const data = await new API('delete', `Operation/${operationId}`, {}).call(true);
+
+      if (data.status === 200) {
+        alert('Usuwanie powiodło się');
+      } else {
+        alert('Usuwanie nie powiodło się');
+      }
+    } catch (error) {
+      console.error('error', error);
+    }
+  }
+
+  async loadProductTypes() {
+    try {
+      const data: ProductType[] = await new API('get', 'Product/ProductType').call();
+      this.productTypes = data.map((el) => ({ value: el.productTypeId, text: el.name }));
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
   // @Watch('currentPage')
   // public onCurrentPageChange() {
@@ -48,8 +80,9 @@ export default class OperationList extends Vue {
     });
   }
 
-  mounted() {
+  created() {
     this.setViewTitle();
+    this.loadProductTypes();
   }
 
   async loadOperations(page: number, limit: number) {

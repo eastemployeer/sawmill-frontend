@@ -7,7 +7,7 @@
       </div>
 
       <div :style="{ marginTop: '63px' }">
-        <Input v-model="emailLogin" label="Email" placeholder="Email" />
+        <Input v-model="login" label="Login" placeholder="Login" />
         <Input :style="{ marginTop: '10px' }" v-model="password" inputType="password" label="Hasło"
           placeholder="Hasło" />
       </div>
@@ -16,7 +16,7 @@
         Kliknij tu by stworzyć konto administratora
       </router-link>
 
-      <b-button v-on:click='login' variant="primary" :style="{ marginTop: '5px' }">Zaloguj się</b-button>
+      <b-button v-on:click='signIn' variant="primary" :style="{ marginTop: '5px' }">Zaloguj się</b-button>
     </div>
   </div>
 </template>
@@ -35,15 +35,15 @@ import { AuthAction } from '@/store/modules/AuthModule';
   },
 })
 export default class Login extends Vue {
-  emailLogin = '';
+  login = '';
 
   password = '';
 
   loginType = 'KLIENT';
 
-  login() {
+  signIn() {
     const data = {
-      email: this.emailLogin,
+      login: this.login,
       password: this.password,
     };
 

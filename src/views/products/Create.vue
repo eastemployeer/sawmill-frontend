@@ -35,10 +35,10 @@ export default class ProductCreate extends Vue {
           woodTypeId: this.newProduct.woodTypeId,
         },
       }).call(true);
-
+      console.log(data.status);
       if (data.status === 400) {
         alert('Wprowadzono błędne dane');
-      } else if (data.status === 201) {
+      } else if (data.status === 200) {
         this.$router.back();
         alert('Stworzono produkt');
       } else {

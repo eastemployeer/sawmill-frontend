@@ -2,7 +2,6 @@
   <div class="sidebar">
     <router-link :to="{ name: 'ProductList' }" class="panelName">{{ panelName }}</router-link>
     <span class="userName">{{ userName }}</span>
-    <span class="userEmail">{{ userEmail }}</span>
     <div class="divider" />
 
     <div v-for="el in buttons" :key="el.text">
@@ -34,8 +33,6 @@ import { AuthAction } from '@/store/modules/AuthModule';
 export default class SideBar extends Vue {
   userName = 'Adam Kowalski';
 
-  userEmail = '';
-
   panelName = 'Panel pracownika';
 
   buttons = [
@@ -47,7 +44,7 @@ export default class SideBar extends Vue {
     {
       icon: 'b-icon-people-fill',
       text: 'Lista pracowników',
-      action: 'ProductList',
+      action: 'EmployeeList',
     },
     {
       icon: 'b-icon-clock-history',
@@ -93,8 +90,7 @@ export default class SideBar extends Vue {
   }
 
   mounted() {
-    this.userName = `${store.state.auth.currentUser?.imie} ${store.state.auth.currentUser?.nazwisko}`;
-    this.userEmail = `${store.state.auth.currentUser?.email}`;
+    this.userName = `${store.state.auth.currentUser?.name} ${store.state.auth.currentUser?.surname}`;
   }
 }
 </script>
@@ -130,6 +126,7 @@ export default class SideBar extends Vue {
   font-size: 14px;
   line-height: 21px;
   color: #192A3E;
+  margin-bottom: 20px;
 }
 
 .userEmail {
