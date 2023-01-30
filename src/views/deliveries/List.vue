@@ -1,5 +1,5 @@
 <template>
-  <Table :items="orders" :fields="fields" :loadItems="loadOrders" linkTo="OrderDetails" />
+  <Table :items="deliveries" :fields="fields" :loadItems="loadDeliveries" linkTo="DeliveryDetails" />
 </template>
 
 <script lang="ts">
@@ -7,6 +7,7 @@ import { Watch } from 'vue-property-decorator';
 import API from '@/services/API';
 import EventBus from '@/services/EventBus';
 import Table from '@/components/Table.vue';
+import { Employee } from '@/models/Employee';
 import { Options, Vue } from 'vue-class-component';
 
 @Options({
@@ -14,7 +15,7 @@ import { Options, Vue } from 'vue-class-component';
     Table,
   },
 })
-export default class OrderList extends Vue {
+export default class DeliveryList extends Vue {
   parentHeight = 0;
 
   currentPage = 1;
@@ -23,25 +24,26 @@ export default class OrderList extends Vue {
 
   isLoading = true;
 
-  orders: any[] = [];
+  deliveries: any[] = [];
 
   fields = [
+    { key: 'deliveryId', label: 'Numer dostawy' },
     { key: 'orderId', label: 'Numer zamówienia' },
-    { key: 'creationDate', label: 'Data utworzenia', formatter: (date: Date) => (date ? `${new Date(date).toISOString().split('T')[0]}` : '-') },
-    { key: 'acceptanceDate', label: 'Data potwierdzenia', formatter: (date: Date) => (date ? `${new Date(date).toISOString().split('T')[0]}` : '-') },
-    { key: 'orderPrice', label: 'Cena za m3', formatter: (value: string) => `${value} zł` },
-    { key: 'orderState', label: 'Status' },
+    { key: 'orderCreationDate', label: 'Data utworzenia', formatter: (date: Date) => (date ? `${new Date(date).toISOString().split('T')[0]}` : '-') },
+    { key: 'sendDate', label: 'Data wysłania', formatter: (date: Date) => (date ? `${new Date(date).toISOString().split('T')[0]}` : '-') },
+    { key: 'deliverer', label: 'Dostawca', formatter: (employee: Employee) => (employee ? `${employee.firstName} ${employee.lastName}` : '-') },
+    { key: 'state', label: 'Status' },
     { key: 'id', label: '' },
   ];
 
   @Watch('currentPage')
   public onCurrentPageChange() {
-    this.loadOrders(this.currentPage);
+    this.loadDeliveries(this.currentPage);
   }
 
   async setViewTitle() {
     await EventBus.$emit('layout-view', {
-      title: 'Lista zamówień',
+      title: 'Lista dostaw',
     });
   }
 
@@ -49,15 +51,16 @@ export default class OrderList extends Vue {
     this.setViewTitle();
   }
 
-  async loadOrders(page?: number) {
+  async loadDeliveries(page?: number) {
     try {
-      const data = await new API('get', 'order', {
+      const data = await new API('get', 'delivery', {
         query: {
           _limit: 30,
           _page: page || 0,
         },
       }).call();
-      this.orders = data;
+      this.deliveries = data;
+      console.log(this.deliveries);
     } catch (error) {
       console.error('error', error);
     }

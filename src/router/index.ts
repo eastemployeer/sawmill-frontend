@@ -16,6 +16,8 @@ import EmployeeCreate from '../views/employees/Create.vue';
 
 import OrderList from '../views/orders/List.vue';
 import OrderDetails from '../views/orders/Details.vue';
+import DeliveryList from '../views/deliveries/List.vue';
+import DeliveryDetails from '../views/deliveries/Details.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -99,6 +101,16 @@ const routes: Array<RouteRecordRaw> = [
     path: '/order/:id',
     name: 'OrderDetails',
     component: OrderDetails,
+  },
+  {
+    path: '/delivery',
+    name: 'DeliveryList',
+    component: DeliveryList,
+  },
+  {
+    path: '/delivery/:id',
+    name: 'DeliveryDetails',
+    component: DeliveryDetails,
   },
 
 ];
