@@ -1,24 +1,24 @@
 <template>
   <div class="container">
-    <div class="row">
+    <div class="myRow">
       <Input v-model="modelValue.firstName" label="Imię" placeholder="Jan" />
       <Input v-model="modelValue.lastName" label="Nazwisko" placeholder="Kowalski" />
     </div>
-    <div class="row" v-if="creating">
+    <div class="myRow" v-if="creating">
       <Input v-model="modelValue.login" label="Login" placeholder="Login" />
       <Input v-model="modelValue.password" inputType="password" label="Hasło" placeholder="****" />
     </div>
-    <div class="row">
-      <div class="form-group">
+    <div class="myRow">
+      <div>
         <label for="stanowisko" class="textLabel">Stanowisko</label>
         <b-form-select variant="outline-primary" :options="employeeTypes" v-model="modelValue.employeeTypeId" />
       </div>
-      <div class="form-group">
+      <div class="column">
         <label for="blokada" class="textLabel">Blokada konta</label>
-        <!-- <b-form-select variant="outline-primary" :options="lockTypes" v-model="modelValue.isBlocked" /> -->
+        <input class="form-check-input" type="checkbox" v-model="modelValue.isBlocked" id="blokada">
       </div>
     </div>
-    <div class="row">
+    <div>
       <button type="button" style="margin-top: 20px;" class="btn btn-primary" v-on:click="buttonOnClick">Zapisz
         zmiany</button>
     </div>
@@ -61,13 +61,29 @@ export default class ModifyEmployee extends Vue {
 }
 </script>
 <style lang="scss" scoped>
-.row {
+.myRow {
   display: flex;
   flex-direction: row;
   margin-top: 20px;
+  gap: 65px;
+}
+
+select {
+  width: 400px;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+
+  input {
+    width: 30px;
+    height: 30px;
+  }
 }
 
 .inputComponent {
-  max-width: 200px;
+  width: 400px;
 }
 </style>

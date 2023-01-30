@@ -4,7 +4,6 @@
   </div>
 </template>
 <script lang="ts">
-import { Watch } from 'vue-property-decorator';
 import API from '@/services/API';
 import EventBus from '@/services/EventBus';
 import { Options, Vue } from 'vue-class-component';
@@ -45,7 +44,7 @@ export default class EmployeeCreate extends Vue {
         }).call(true);
         if (data.status === 400) {
           alert('Wystąpił błąd, sprawdz wprowadzone dane');
-        } else if (data.status === 201) {
+        } else if (data.status === 200) {
           this.$router.back();
           alert('Dodano nowego pracownika');
         } else {
