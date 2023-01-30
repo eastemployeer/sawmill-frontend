@@ -56,7 +56,7 @@ export default class ProductList extends Vue {
 }
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 .buttons {
   display: flex;
   flex-direction: row;

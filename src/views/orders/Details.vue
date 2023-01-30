@@ -170,7 +170,7 @@ export default class OrderDetails extends Vue {
 }
 </script>
 
-<style>
+<style scoped lang="scss">
 .infoSegment {
   display: flex;
   width: 100%;

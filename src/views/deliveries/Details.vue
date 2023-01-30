@@ -168,7 +168,7 @@ export default class DeliveryDetails extends Vue {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
 .infoSegment {
   display: flex;
   width: 100%;
