@@ -20,16 +20,6 @@ import OperationModify from './_Modifi.vue';
   },
 })
 export default class OperationEdit extends Vue {
-  //   export interface Operation {
-  //     operationId: number;
-  //     name: string;
-  //     description: string;
-  //     sourceProductTypeId: number;
-  //     outputProductTypeId: number;
-  //     sourceOutputRatio: number;
-  //     duration: number;
-  //     isArchived: boolean;
-  // }
   operation: Operation = {
     operationId: 0, name: '', description: '', sourceProductTypeId: 0, outputProductTypeId: 0, sourceOutputRatio: 1, duration: 1, isArchived: false,
   };
@@ -42,6 +32,7 @@ export default class OperationEdit extends Vue {
   async loadOperation() {
     try {
       const data = await new API('get', `Operation/${this.$route.params.id}`, {}).call();
+      console.log(data);
       this.operation = { ...data };
       console.log(this.operation);
     } catch (error) {
@@ -58,9 +49,9 @@ export default class OperationEdit extends Vue {
 
       if (data.status === 400) {
         alert('Wystąpił błąd, sprawdz wprowadzone dane');
-      } else if (data.status === 201) {
+      } else if (data.status === 200) {
         this.$router.back();
-        alert('Zaktualizowano produkt');
+        alert('Zaktualizowano operację');
       } else {
         alert('Nieznany błąd');
       }
@@ -70,7 +61,7 @@ export default class OperationEdit extends Vue {
   }
 
   async setViewTitle() {
-    await EventBus.$emit('layout-view', { title: 'Edycja produktu' });
+    await EventBus.$emit('layout-view', { title: 'Edycja operacji' });
   }
 }
 </script>

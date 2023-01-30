@@ -1,11 +1,11 @@
 <template>
   <div class="inputComponent">
     <span class="label">{{ label }}</span>
-    <textarea class="input" v-if="multiline" :rows="rows" :maxlength="max" :value="model" @input="onInput"
+    <textarea class="input" v-if="multiline" :rows="rows" :maxlength="max" :value="modelValue" @input="onInput"
       :placeholder="placeholder" />
-    <input class="input" v-else :type="inputType" :maxlength="max" :disabled="disabled" :value="model" @input="onInput"
-      :placeholder="placeholder" />
-    <div class="counter" v-if="max"> {{ model.length }}/{{ max }} </div>
+    <input class="input" v-else :type="inputType" :maxlength="max" :disabled="disabled" :value="modelValue"
+      @input="onInput" :placeholder="placeholder" />
+    <div class="counter" v-if="max"> {{ modelValue.length }}/{{ max }} </div>
   </div>
 </template>
 
@@ -15,10 +15,6 @@ import { Prop, Watch } from 'vue-property-decorator';
 
 @Options({})
 export default class Input extends Vue {
-  @Watch('modelValue') onValueChange(newValue: string) {
-    this.model = newValue;
-  }
-
   @Prop({ default: '' })
   modelValue!: string;
 
@@ -37,12 +33,6 @@ export default class Input extends Vue {
   @Prop() max?: number;
 
   @Prop({ default: false }) disabled!: boolean;
-
-  model = this.modelValue;
-
-  created() {
-    if (this.model === null) this.model = '';
-  }
 
   onInput(event: any) {
     this.$emit('update:modelValue', event.target.value);
