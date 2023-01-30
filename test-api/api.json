@@ -76,30 +76,64 @@
       "isArchived": true
     }
   ],
-  "orders": [
+  "orders":[
     {
-      "orderId": 1,
-      "clientId": 1,
-      "orderStateId": 1,
-      "creationDate": "",
-      "acceptanceDate": "",
-      "deliveryId": 1
+      "id": 1,
+      "number": 1,
+      "clientDetails": {
+        "id": 1,
+        "firstName": "Adam",
+        "lastName": "Las",
+        "address": {
+          "street" : "Topstreet",
+          "postalCode" : "23-567",
+          "city" : "Dover"
+        },
+        "companyName" : "LasCompany",
+        "NIP" : "123456789",
+        "IsArchived" : false
+      },
+      "creationDate": "2023-01-23T18:30:23.800Z",
+      "acceptanceDate": "2023-01-23T18:30:23.800Z",
+      "state": "Utworzone",
+      "orderDetails": [{  
+        "id": 1,
+        "woodType": "Buk",
+        "productType": "Deska",
+        "price": 23,
+        "amount": 3,
+        "fullPrice" : 69
+      }],
+      "price": 23
     },
     {
-      "orderId": 1,
-      "clientId": 1,
-      "orderStateId": 1,
-      "creationDate": "",
-      "acceptanceDate": "",
-      "deliveryId": 1
-    },
-    {
-      "orderId": 1,
-      "clientId": 1,
-      "orderStateId": 1,
-      "creationDate": "",
-      "acceptanceDate": "",
-      "deliveryId": 1
+      "id": 2,
+      "number": 2,
+      "clientDetails": {
+        "id": 2,
+        "firstName": "Anna",
+        "lastName": "Huk",
+        "address":  {
+          "street" : "Topstreet",
+          "postalCode" : "23-567",
+          "city" : "Dover"
+      },
+        "companyName" : "LasCompany",
+        "NIP" : "123456789",
+        "IsArchived" : false
+      },
+      "creationDate": "2023-01-21T18:30:23.800Z",
+      "acceptanceDate": "2023-01-21T18:30:23.800Z",
+      "state": "Anulowane",
+      "orderDetails": [{  
+        "id": 1,
+        "woodType": "Buk",
+        "productType": "Deska",
+        "price": 23,
+        "amount": 3,
+        "fullPrice" : 69
+      }],
+      "price": 23
     }
   ]
 }

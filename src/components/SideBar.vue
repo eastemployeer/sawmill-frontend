@@ -49,7 +49,7 @@ export default class SideBar extends Vue {
     {
       icon: 'b-icon-clock-history',
       text: 'Lista zamówień',
-      action: 'ProductList',
+      action: 'OrderList',
     },
     {
       icon: 'b-icon-cart',
@@ -69,7 +69,7 @@ export default class SideBar extends Vue {
     {
       icon: 'b-icon-truck',
       text: 'Lista dostaw',
-      action: 'ProductList',
+      action: 'DeliveryList',
     },
     {
       icon: 'b-icon-tools',
